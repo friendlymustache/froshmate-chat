@@ -1,6 +1,0 @@
-{{#if session.isAuthenticated}}
-  <a {{ action 'invalidateSession' }}>Logout</a>
-{{else}}
-	<div class="ui facebook button" {{action 'authorize' }}>Sign in with Facebook </div>
-{{/if}}
-{{yield}}

@@ -5,3 +5,8 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+
+Conversation.create({student_id: 1, mentor_id: 5})
+Conversation.create({student_id: 1, mentor_id: 7})
+Conversation.create({student_id: 2, mentor_id: 5})

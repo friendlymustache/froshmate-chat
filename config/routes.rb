@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   #   resources :products
   post 'login' => 'login#login_or_register'
   resources :users
+  resources :conversations
+  resources :messages
 
   # Example resource route with options:
   #   resources :products do
