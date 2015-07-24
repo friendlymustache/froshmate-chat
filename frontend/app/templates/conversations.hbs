@@ -1,0 +1,34 @@
+<div class="ui compact celled grid" style="height: 100%; margin-bottom: 0px">
+
+	<div class="row" style="height: 12%">
+		<div class="five wide column"> 
+			<div class="ui centered header"> Mentors </div> 
+		</div>
+		<div class="eleven wide column"> 
+			<div class="ui centered header sixteen wide column"> Mentor name </div> 
+		</div>
+	</div>
+
+	<div class="row" style="height: 88%">
+		<div class="five wide column" style="padding:0px">
+			<div class="ui relaxed divided list" >
+				<div class="left-padded item">
+					Jason Li
+				</div>
+				{{#each convo in model}}
+					{{#conversation-link conversation=convo}}{{/conversation-link}}
+				{{/each}}
+
+			</div>
+		</div>
+
+		<div class="eleven wide column" style="padding:0px; height: 100%">
+			{{outlet}}
+		</div>
+	</div>
+
+
+</div>
+
+
+

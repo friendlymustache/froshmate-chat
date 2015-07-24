@@ -1,0 +1,17 @@
+<div class="ui relaxed list" style="height: 90%; padding: 10px; margin-bottom: 0px">
+	{{#each msg in model.messages}}
+		{{#message-bubble message=msg}}{{/message-bubble}}
+	{{/each}}
+</div>
+
+<div class="ui grid" style="height: 10%; margin: 0px;">
+	<div class="row" style="height: 100%; padding: 0px">
+		<div class="sixteen wide column" style="padding: 0px; height: 100%">
+				<div class="ui form"  style="height: 100%">
+					<div class="ui left input" style="height: 100%">
+						{{input action="send_message" class="ui input full-height" value=message_text placeholder="Write a message..."}}
+					</div>
+				</div>
+		</div>
+	</div>
+</div>
