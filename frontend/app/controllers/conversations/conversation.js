@@ -38,6 +38,15 @@ export default Ember.Controller.extend({
 	  //   console.log('Message: ' + event.data);
 	  // },
 
+	init: function() {
+		this._super();
+		var socket = this.get('conversation.socket');
+		var recipient_id = parseInt(this.get('model.student.id')) + parseInt(this.get('model.mentor.id')) - sender_id;
+		socket.on('rt-change/' + recipient_id, (message) => {
+			this.get('messages').pushObject(message);
+		});
+	},
+
 	actions : {
 		send_message : function() {
 			var text = this.get('message_text');
