@@ -15,16 +15,15 @@ class MessagesController < ApplicationController
 			@message = nil
 			if user && message_params[:sender_id] == user.id
 				@message = Message.create(message_params)
-				# @message["recipient_id"] = message_params[:recipient_id];
-				# recipient = User.find(message_params[:recipient_id])
-				# if recipient == nil
-				# 	puts "Couldn't find recipient"
-				# else
-				# 	puts "Found recipient successfully"
-				# end
-				# recipient_auth_token = recipient.auth_token
-    			$redis.publish 'rt-change', @message.to_json
-				puts "Creating user with params: #{message_params}"    			
+				recipient = User.find(message_params[:recipient_id])
+				if recipient == nil
+					puts "Couldn't find recipient"
+				else
+					puts "Found recipient successfully"
+				end
+				recipient_auth_token = recipient.auth_token
+    			$redis.publish "rt-change/#{recipient_auth_token}", @message.to_json
+				puts "Creating message with params: #{message_params}"    			
 			end
 			render json: @message
 		end

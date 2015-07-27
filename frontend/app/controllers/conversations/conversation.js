@@ -1,50 +1,29 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-	  // /*
-	  // * 1) First step you need to do is inject the websocket service into your object. You
-	  // * can inject the service into component, controllers, object, mixins, routes, and views.
-	  // */
-	  // socketService: Ember.inject.service('websockets'),
-
-	  // init: function() {
-	  //   this._super.apply(this, arguments);
-
-	  //   /*
-	  //   * 2) The next step you need to do is to create your actual websocket. Calling socketFor
-	  //   * will retrieve a cached websocket if one exists or in this case it
-	  //   * will create a new one for us.
-	  //   */
-	  //   var socket = this.get('socketService').socketFor('http://localhost:5001/');
-
-	    
-	  //   * 3) The final step is to define your event handlers. All event handlers
-	  //   * are added via the `on` method and take 3 arguments: event name, callback
-	  //   * function, and the context in which to invoke the callback. All 3 arguments
-	  //   * are required.
-	    
-	  //   socket.on('open', this.myOpenHandler, this);
-	  //   socket.on('rt-change', this.myMessageHandler, this);
-	  //   socket.on('close', function(event) {
-	  //     // anonymous functions work as well
-	  //   }, this);
-	  // },
-
-	  // myOpenHandler: function(event) {
-	  //   console.log('On open event has been called: ' + event);
-	  // },
-
-	  // myMessageHandler: function(event) {
-	  //   console.log('Message: ' + event.data);
-	  // },
-
+	socket: Ember.inject.service('socket'),
+	  
 	init: function() {
-		this._super();
-		var socket = this.get('conversation.socket');
-		var recipient_id = parseInt(this.get('model.student.id')) + parseInt(this.get('model.mentor.id')) - sender_id;
-		socket.on('rt-change/' + recipient_id, (message) => {
-			this.get('messages').pushObject(message);
-		});
+		var websocket = this.get('socket').connect();
+		var auth_token = this.get('session.secure.auth_token');
+
+		websocket.on('connect', function(event) {
+			console.log('Socket connected');
+			websocket.emit('auth_token', auth_token);
+		}, this);
+
+		var self = this;
+
+		websocket.on('rt-change/' + auth_token, function(message) {
+			console.log('Got message!');
+			var msg = JSON.parse(message);
+			console.log(msg);
+			self.store.push(self.store.normalize('message', msg));
+		}, this);
+
+		websocket.on('disconnect', function(event) {
+			console.log('On close event has been called: ' + event);
+		}, this);
 	},
 
 	actions : {
@@ -56,7 +35,7 @@ export default Ember.Controller.extend({
 
 			var message = this.store.createRecord('message', {'conversation' : conversation, 'text' : text,
 			 'sender_id' : sender_id, 'recipient_id' : recipient_id});
-			debugger;
+			
 			message.save();
 			this.set('message_text', "");
 

@@ -11,30 +11,19 @@ var io = require('socket.io')(http);
 var redis = require('redis').createClient();
 
 io.on('connection', function(socket) {
-    redis.subscribe('rt-change');
+    console.log("Server connected!");
+    socket.on('auth_token', function(token) {
+        console.log("Auth token received!");
+        redis.subscribe('rt-change/' + token);
 
-    redis.on('message', function(channel, message) {
-        var msg = JSON.parse(message);
-        socket.emit('rt-change/' + msg["recipient_id"], JSON.parse(message));
-    });
+        redis.on('message', function(channel, message) {
+            socket.emit('rt-change/' + token, message);
+        });
+    })
 });
 
 
-// var io = require('socket.io').listen(5001),
-//     redis = require('redis').createClient();
-
-// io.on('connection', function(socket) {
-//     socket.on('receive_auth_token', function(auth_token) {
-//         redis = require('redis').createClient();
-//         redis.subscribe('rt-change/' + auth_token);
-
-//         redis.on('message', function(channel, message) {
-//             socket.emit('rt-change/' + auth_token, JSON.parse(message));
-//         })
-//     });
-// });
-
 //set up our http to listen
-http.listen(4200, function(){
-  console.log('listening on *:4200');
+http.listen(5001, function(){
+  console.log('listening on *:5001');
 });
