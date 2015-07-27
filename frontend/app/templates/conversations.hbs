@@ -1,29 +1,31 @@
 <div class="ui compact celled grid" style="height: 100%; margin-bottom: 0px">
 
-	<div class="row" style="height: 12%">
+	<div class="middle aligned row" style="height: 12%">
 		<div class="five wide column"> 
-			<div class="ui centered header"> Mentors </div> 
+			<div class="ui centered header"> 
+				<div class="centered content"> <i class="blue user icon"/>  Connections </div> 
+			</div>
 		</div>
 		<div class="eleven wide column"> 
-			<div class="ui centered header sixteen wide column"> Mentor name </div> 
+			<div class="ui centered header sixteen wide column"> {{outlet "partner-name"}} </div> 
 		</div>
 	</div>
 
 	<div class="row" style="height: 88%">
-		<div class="five wide column" style="padding:0px">
-			<div class="ui relaxed divided list" >
-				<div class="left-padded item">
-					Jason Li
-				</div>
-				{{#each convo in model}}
-					{{#conversation-link conversation=convo}}{{/conversation-link}}
-				{{/each}}
+		<div class="five wide column" id="conversation-list" style="padding:0px; overflow-y: scroll">
 
+			<div class="ui huge relaxed divided selection list" >
+				{{#each convo in model}}
+					{{#link-to 'conversations.conversation' convo.id class="left-padded item"}} 				
+					{{#conversation-link conversation=convo}}{{/conversation-link}}
+					{{/link-to}}
+				{{/each}}
+				<div class="ui divider" style="margin-top: 0px"></div>
 			</div>
 		</div>
 
 		<div class="eleven wide column" style="padding:0px; height: 100%">
-			{{outlet}}
+			{{outlet "conversation-content"}}
 		</div>
 	</div>
 

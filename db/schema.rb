@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20150723235903) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "conversations", force: :cascade do |t|
     t.integer  "student_id"
     t.integer  "mentor_id"

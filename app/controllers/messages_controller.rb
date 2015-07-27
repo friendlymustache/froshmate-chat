@@ -16,12 +16,15 @@ class MessagesController < ApplicationController
 			if user && message_params[:sender_id] == user.id
 				# Create the new message
 				@message = Message.create(message_params)
-				# Find the auth token of the message's recipient
-				recipient = User.find(@message.recipient_id)
+				recipient = User.find(message_params[:recipient_id])
+				if recipient == nil
+					puts "Couldn't find recipient"
+				else
+					puts "Found recipient successfully"
+				end
 				recipient_auth_token = recipient.auth_token
-				# Notify redis that we sent a message to the recipient
-				# of the message.				
     			$redis.publish "rt-change/#{recipient_auth_token}", @message.to_json
+				puts "Creating message with params: #{message_params}"    			
 			end
 			render json: @message
 		end

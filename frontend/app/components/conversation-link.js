@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+	tagName : 'a',
 	classNames : ['left-padded', 'item'],
 	other_user : function() {
 		var conversation = this.get('conversation');
@@ -11,5 +12,5 @@ export default Ember.Component.extend({
 			return mentor;
 		}
 		return student;
-	}.property('conversation')
+	}.property('conversation'),
 });

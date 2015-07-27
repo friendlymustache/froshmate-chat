@@ -1,5 +1,15 @@
-<div class="{{if sent_by_curr_user 'right' 'left'}} floated content" {{action "reveal"}}>
-	{{message.text}}
+
+{{#if show_date}}
+	<div class="ui tiny label {{if sent_by_curr_user 'right' 'left'}} floated content">
+	{{moment message.created_at dateOutputFormat}} 
+	</div>
+	<br> <br>
+{{/if}}
+
+<div class="{{if sent_by_curr_user 'right' 'left'}} floated content" {{action "toggle_date"}}>
+	<a class="ui large {{if sent_by_curr_user 'blue'}} label">{{message.text}}</a>
 </div>
+
+
 
 {{yield}}	
