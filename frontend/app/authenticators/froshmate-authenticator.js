@@ -8,8 +8,10 @@ import User from 'admissions-game/models/user';
 export default Base.extend({
 
   tokenAttributeName : 'auth_token',
-  save(user) {
-    var url = config.host + "/users"
+  save(user, isHighSchooler) {
+    var url = config.host
+    var url = isHighSchooler ? url.concat('/high_schoolers') : url = url.concat('/college_students');
+    debugger;
     console.log("Saving to " + url);
     return Ember.$.ajax({'url' : url, 'data' : {'user' : user}, 'method' : 'POST'});
   },
@@ -27,9 +29,9 @@ export default Base.extend({
   },
 
   authenticate(options) {
-    debugger;
+    var isHighSchooler = options.isHighSchooler;
     var user = options.user;
-    return this.save(user);
+    return this.save(user, isHighSchooler)
   },
 
   invalidate(data) {

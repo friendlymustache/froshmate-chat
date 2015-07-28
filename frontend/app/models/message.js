@@ -11,7 +11,8 @@ export default DS.Model.extend({
   // Check whether the current user ID
   // (can obtain through session.secure.id) matches the sender
   // ID -- if so, it should show up on the right in blue.
-  // If not, it should show up on the left in grey  
+  // If not, it should show up on the left in grey
+  sent_by_high_schooler : DS.attr('boolean'),
   sender_id : DS.attr('number'),
   recipient_id : DS.attr('number'),
   // Datetime at which message was sent

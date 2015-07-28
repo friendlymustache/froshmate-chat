@@ -53,13 +53,13 @@ export default Ember.Component.extend({
    * Facebook. Gets the user's account attributes, then
    * makes a request to a login endpoint on the server */
   authenticate: function(accessToken) {
-    var datastore = this.get('datastore');  
+    var datastore = this.get('datastore');
     var token = accessToken;
     return this.getAccountAttributes().then(function(accountAttributes) {
       accountAttributes['fb_user_id'] = accountAttributes['id'];
       delete accountAttributes['id'];
       accountAttributes['access_token'] = token;
-      var user = datastore.createRecord('user', accountAttributes);  
+      var user = datastore.createRecord('user', accountAttributes);
       return user;
     });
   },
@@ -68,10 +68,13 @@ export default Ember.Component.extend({
   	/* Handles the entire login flow */
     authorize: function() {
       var self = this;
+      console.log("In authorize");
+      debugger;
       /* Determines if the user is logged in */
       this.getLoginStatus().then(
         /* Executes if we were able to determine login status */
         function() {
+          debugger;
           /* Tries to get an access token for the current user, launching
            * the FB login dialog */
           self.getAccessToken().then(function(accessToken) {

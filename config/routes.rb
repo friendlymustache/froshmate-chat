@@ -14,7 +14,10 @@ Rails.application.routes.draw do
   # Example resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
   post 'login' => 'login#login_or_register'
-  resources :users
+  resources :high_schoolers
+  resources :college_students
+  resources :high_schools
+  resources :colleges
   resources :conversations
   resources :messages
 

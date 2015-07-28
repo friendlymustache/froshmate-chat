@@ -1,5 +1,5 @@
 <div class = "ui borderless menu">
-	<div class="ui item"> 
+	<div class="ui item">
       {{#link-to 'index'}}
         <img class="ui small image" src="/images/logo.png">
       {{/link-to}}
@@ -7,21 +7,24 @@
 	{{#if session.isAuthenticated}}
 	<div class="ui item">
 		Welcome, {{session.secure.name}}
-	</div>		
+	</div>
 	{{/if}}
 
 	<div class="ui borderless right menu" style="width: 30%; border: 0px; box-shadow: none;">
-		<div class="ui secondary {{if session.isAuthenticated 'two' 'three'}} item borderless menu">
+		<div class="ui secondary item borderless menu">
 			<div class="ui item">
 				{{#link-to 'faq'  class="ui fade blue basic button"}} FAQ {{/link-to}}
 			</div>
-			{{#unless session.isAuthenticated}}
-				<div class="ui item"> 
+			{{#if session.isAuthenticated}}
+				<div class="ui item">
+					{{#link-to 'myaccount' class="ui fade blue basic button"}} My Profile {{/link-to}}
+				</div>
+			{{else}}
+				<div class="ui item">
 					{{#link-to 'signup' class="ui fade blue basic button"}} Signup {{/link-to}}
 				</div>
-			{{/unless}}
-			
-			<div class="ui item"> 
+			{{/if}}
+			<div class="ui item">
 				{{#fb-login datastore=store success="login_success" failure="login_failure"}}{{/fb-login}}
 			</div>
 
@@ -42,7 +45,7 @@
     <div class="ui centered row">
       <div class="ui divided horizontal footer link list">
         <div class="item">
-          &copy; Froshmate
+          Froshmate
         </div>
 
         <div class="item">

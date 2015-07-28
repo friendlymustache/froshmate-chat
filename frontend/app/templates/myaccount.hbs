@@ -1,0 +1,92 @@
+{{outlet}}
+<div id="one"></div>
+<div id="one"></div>
+<div id="one"></div>
+
+<div class="ui grid">
+  <div class="ui row"></div>
+  <div class="ui centered row">
+    <div class="four wide column">
+      <div class="ui fluid vertical blue secondary pointing menu" id="account_menu">
+        <div class="active item" data-tab="ainfo">Account Info</div>
+        <div class="item" data-tab="mentors">Mentors</div>
+      </div>
+    </div>
+    <div class="ten wide column">
+      <div class="ui active tab" data-tab="ainfo">
+        <form class="ui center aligned form">
+          <div class="ten wide field">
+            <h4 class="ui horizontal divider header">
+              <i class="mail outline icon"></i>Email
+            </h4>
+            <input type="text" name="first-name" placeholder={{session.secure.email}}>
+          </div>
+          <div class="ten wide field">
+            <input type="text" name="last-name" placeholder="Retype your email">
+          </div>
+          <div class="ui primary button" type="submit">Update your Email</div>
+        </form>
+        <!--
+        <div id="five"></div>
+        <form class="ui center aligned form">
+          <div class="ten wide field">
+            <h4 class="ui horizontal divider header">
+              <i class="lock icon"></i>Password
+            </h4>
+            <input type="text" name="first-name" placeholder="Current password">
+          </div>
+          <div class="ten wide field">
+            <input type="text" name="first-name" placeholder="Type in your new password">
+          </div>
+          <div class="ten wide field">
+            <input type="text" name="last-name" placeholder="Retype your password">
+          </div>
+          <div class="ui primary button" type="submit">Update your password</div>
+        </form>
+        -->
+      </div>
+      <div class="ui tab" data-tab="mentors">
+        <h4 class="ui horizontal divider header">
+          Current Mentors
+        </h4>
+        <p class="ui medium header">
+          UChicago
+        </p>
+        <p style="font-size:150%">
+            Jason Li
+        </p>
+        <p style="font-size:100%">
+            Rising Sophomore<br>
+            Majoring in Economics
+        </p>
+        <h4 class="ui horizontal divider header">
+          Pending Mentors
+        </h4>
+        <p class="ui medium header">
+          Columbia
+        </p>
+        <p style="font-size:100%">
+            Major: Finance
+        </p>
+        <p style="font-size:100%">
+            Activities: Fencing, as well as Debate.
+        </p>
+        <h4 class="ui horizontal divider header">
+          Find Mentors at another school
+        </h4>
+        <form class="ui center aligned form">
+          <div class="ten wide field">
+            {{college-dropdown name='Choose a dream college' action="setCollege"}}
+          </div>
+          <div class="ten wide field">
+            <input type="text" name="major" placeholder="What major?">
+          </div>
+          <div class="ten wide field">
+            <textarea rows="2" name="major" placeholder="What activites are you interested in?"></textarea>
+          </div>
+          <button class="ui primary button" type="submit">Find more mentors!</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -5,13 +5,14 @@ export default Ember.Component.extend({
   highschooler: false,
   collegestudent: false,
   issigningup: false,
+  college: "",
+
   something_selected: function() {
     return (this.get('highschooler') || this.get('collegestudent'));
   }.property('highschooler', 'collegestudent'),
 
   invalid_college: false,
   invalid_name: false,
-  invalid_dream_college: false,
   invalid_school: false,
   invalid_email: false,
   email_taken: false,
@@ -20,9 +21,9 @@ export default Ember.Component.extend({
 	/* Validate the HS signup form */
 	validate_highschool: function() {
 	  this.validate_common();
-	  this.set('invalid_dream_college', !this.get("dream_college1"));           
+	  this.set('invalid_college', !this.get("college"));
 	  this.set('invalid_school', !this.get('hschool'));
-	  if(this.get('invalid_name') || this.get('invalid_email') || this.get('invalid_school') || this.get('invalid_dream_college')) {
+	  if(this.get('invalid_name') || this.get('invalid_email') || this.get('invalid_school') || this.get('invalid_college')) {
 	    return false;
 	  }
 	  return true;
@@ -31,7 +32,7 @@ export default Ember.Component.extend({
 	/* Validate the college signup form */
 	validate_college: function() {
 	  this.validate_common();
-	  this.set('invalid_college', !document.getElementById("college").value);
+	  this.set('invalid_college', !this.get('college'));
 	  var invalid = this.get('invalid_name') || this.get('invalid_email') || this.get('invalid_college');
 	  return !invalid;
 	},
@@ -49,53 +50,23 @@ export default Ember.Component.extend({
 	 */
 	 get_form_attributes : function() {
 	 	var result = {};
-    result.email = this.get('email');	 
+    result.email = this.get('email');
     if (this.get('highschooler')) {
     	result.school = this.get('hschool');
-    	result.dream_college = this.get('dream_college1');
-    }	
+    	result.college = this.get('college');
+    }
     else {
-	    result.college = document.getElementById("college").value;
+	    result.college = this.get('college');
     }
     return result;
 	 },
 
-
-  signup_college : function() {
-    this.set('issigningup', true);
-    document.getElementById("cbutton").disabled = true;
-    var self = this;
-
-    Ember.$.post('http://localhost:3000/login3cs', body, function(post) {
-      self.set('issigningup', false);
-      console.log(post);
-      if(post.response === "There was an error.") {
-        self.set('email_taken', true);
-      }
-      else {
-        self.set('email_taken', false);
-        window.location.replace("/");
-      }
-    });
-
-  },
-
-  signup_highschool : function() {
-    var self = this;
-    Ember.$.post('http://localhost:3000/login3hs', body, function(post) {
-      self.set('issigningup', false);
-      console.log(post);
-      if(post.response === "There was an error.") {
-        self.set('email_taken', true);
-      }
-      else {
-        self.set('email_taken', false);
-      }
-    });
-  },
-
-
   actions: {
+    /* pass function to college-dropdown to allow it to set college */
+    setCollege: function(college_name) {
+      this.set('college', college_name);
+    },
+
   	/* Open the student sign-up form */
     isStudent: function() {
       if(!this.get('collegestudent') || this.get('highschooler')) {
@@ -118,7 +89,6 @@ export default Ember.Component.extend({
       if (this.validate()) {
       	var user_attributes = this.get_form_attributes();
 	      var self = this;
-
 	      /* Determines if the user is logged in */
 	      this.getLoginStatus().then(function() {
 			      /* Tries to get an access token for the current user, launching
@@ -132,7 +102,7 @@ export default Ember.Component.extend({
 			              // on the server side will be successful
 			              // See https://github.com/simplabs/ember-simple-auth#authenticators
 			              var user_json = self.merge(user.toJSON(), user_attributes);
-			              self.get('session').authenticate('authenticator:froshmate-authenticator', {'user' : user_json}).then(
+			              self.get('session').authenticate('authenticator:froshmate-authenticator', {'user' : user_json, 'isHighSchooler': self.get('highschooler')}).then(
 			                function(user) {
 			                  self.sendAction('success', user);
 			                },
@@ -161,13 +131,13 @@ export default Ember.Component.extend({
   },
 
   validate_common : function() {
-  	var valid_email = this.isEmailValid(this.get('email'));  	
+  	var valid_email = this.isEmailValid(this.get('email'));
   	this.set('invalid_email', !valid_email);
   },
 
   merge : function(object_1, object_2) {
-  	  for (var attrname in object_2) { 
-  	  	object_1[attrname] = object_2[attrname]; 
+  	  for (var attrname in object_2) {
+  	  	object_1[attrname] = object_2[attrname];
   	  }
   	  return object_1;
   },
@@ -240,16 +210,16 @@ export default Ember.Component.extend({
    * Facebook. Gets the user's account attributes, then
    * makes a request to a login endpoint on the server */
   authenticate: function(accessToken) {
-    var datastore = this.get('datastore');  
+    var datastore = this.get('datastore');
     var token = accessToken;
     return this.getAccountAttributes().then(function(accountAttributes) {
       accountAttributes['fb_user_id'] = accountAttributes['id'];
       delete accountAttributes['id'];
       accountAttributes['access_token'] = token;
-      var user = datastore.createRecord('user', accountAttributes);  
+      var user = datastore.createRecord('user', accountAttributes);
       return user;
     });
-  },  
+  },
 
 
 
@@ -260,7 +230,3 @@ export default Ember.Component.extend({
 
 
 });
-
-
-
-

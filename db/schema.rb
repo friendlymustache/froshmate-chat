@@ -11,10 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150723235903) do
+ActiveRecord::Schema.define(version: 20150728231832) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "college", force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "college_students", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "auth_token"
+    t.string   "fb_user_id"
+    t.integer  "high_school_id"
+    t.integer  "college_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
 
   create_table "conversations", force: :cascade do |t|
     t.integer  "student_id"
@@ -24,13 +39,29 @@ ActiveRecord::Schema.define(version: 20150723235903) do
     t.datetime "updated_at",                null: false
   end
 
+  create_table "high_school", force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "high_schoolers", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "auth_token"
+    t.string   "fb_user_id"
+    t.integer  "high_school_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.string   "high_school_name"
+  end
+
   create_table "messages", force: :cascade do |t|
     t.integer  "sender_id"
     t.integer  "recipient_id"
     t.integer  "conversation_id"
     t.string   "text"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+    t.boolean  "sent_by_high_schooler"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -43,14 +74,9 @@ ActiveRecord::Schema.define(version: 20150723235903) do
     t.datetime "updated_at",   null: false
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string   "email"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string   "auth_token"
-    t.string   "fb_user_id"
-    t.string   "name"
-    t.integer  "type"
+  create_table "target_colleges", force: :cascade do |t|
+    t.integer "high_schooler_id"
+    t.integer "college_id"
   end
 
 end
