@@ -27,6 +27,7 @@ export default Base.extend({
   },
 
   authenticate(options) {
+    debugger;
     var user = options.user;
     return this.save(user);
   },

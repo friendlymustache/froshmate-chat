@@ -1,6 +1,6 @@
 {{#if session.isAuthenticated}}
-  <a {{ action 'invalidateSession' }}>Logout</a>
+  <div class="ui basic blue button" {{ action 'invalidateSession' }}>Logout</div>
 {{else}}
-	<div class="ui facebook button" {{action 'authorize' }}>Sign in with Facebook </div>
+	<div class="ui facebook button" {{action 'authorize' }}> <i class="facebook icon"/> Login</div>
 {{/if}}
 {{yield}}

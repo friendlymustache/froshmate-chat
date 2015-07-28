@@ -16,9 +16,15 @@
 
 
 /* CSS for Homepage */
-body {
+/*.row.baby-blue {
     background-color: #f4f9fe;
+}*/
+
+body {
+	    background-color: #f4f9fe;
+
 }
+
 #one {
   height: 1vh;
 }
@@ -31,3 +37,4 @@ height: 10vh;
 #twenty {
 height: 20vh;
 }
+
