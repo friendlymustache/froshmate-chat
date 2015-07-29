@@ -11,7 +11,6 @@ export default Base.extend({
   save(user, isHighSchooler) {
     var url = config.host
     var url = isHighSchooler ? url.concat('/high_schoolers') : url = url.concat('/college_students');
-    debugger;
     console.log("Saving to " + url);
     return Ember.$.ajax({'url' : url, 'data' : {'user' : user}, 'method' : 'POST'});
   },

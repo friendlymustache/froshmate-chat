@@ -59,8 +59,9 @@ export default Ember.Component.extend({
       accountAttributes['fb_user_id'] = accountAttributes['id'];
       delete accountAttributes['id'];
       accountAttributes['access_token'] = token;
-      var user = datastore.createRecord('user', accountAttributes);
-      return user;
+      return accountAttributes;
+      //var user = datastore.createRecord('user', accountAttributes);
+      //return user;
     });
   },
 
@@ -85,7 +86,7 @@ export default Ember.Component.extend({
                   // NOTE: We could assume here that if the user was able to log in via FB, the authentication attempt
                   // on the server side will be successful
                   // See https://github.com/simplabs/ember-simple-auth#authenticators
-                  self.get('session').authenticate('authenticator:froshmate-authenticator', {'user' : user.toJSON()}).then(
+                  self.get('session').authenticate('authenticator:froshmate-authenticator', {'user' : user}).then(
                     function(user) {
                       self.sendAction('success', user);
                     },

@@ -14,14 +14,13 @@
 
 }
 
-
 /* CSS for Homepage */
 /*.row.baby-blue {
     background-color: #f4f9fe;
 }*/
 
 body {
-	    background-color: #f4f9fe;
+	    background-color: #EBF4FC;
 
 }
 
@@ -37,4 +36,3 @@ height: 10vh;
 #twenty {
 height: 20vh;
 }
-
