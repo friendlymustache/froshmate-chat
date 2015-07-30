@@ -3,16 +3,14 @@
 import Ember from 'ember';
 import Base from 'simple-auth/authenticators/base';
 import config from 'admissions-game/config/environment';
-import User from 'admissions-game/models/user';
 
 export default Base.extend({
 
   tokenAttributeName : 'auth_token',
-  save(user, isHighSchooler) {
-    var url = config.host
-    var url = isHighSchooler ? url.concat('/high_schoolers') : url = url.concat('/college_students');
-    console.log("Saving to " + url);
-    return Ember.$.ajax({'url' : url, 'data' : {'user' : user}, 'method' : 'POST'});
+  loginEndpoint : '/login',
+  save(user) {
+    var url = config.host + '/login';
+    return Ember.$.ajax({'url' : url, 'data' : {'user' : user}, 'method' : 'GET'});
   },
 
   restore(properties) {
@@ -28,12 +26,19 @@ export default Base.extend({
   },
 
   authenticate(options) {
-    var isHighSchooler = options.isHighSchooler;
-    var user = options.user;
-    return this.save(user, isHighSchooler)
+    var user = this.get_user_fields(options.user);
+    return this.save(user)
   },
 
   invalidate(data) {
     return Ember.RSVP.resolve();
+  },
+
+
+  get_user_fields(user) {
+    var result = {}
+    result.fb_user_id = user.fb_user_id;
+    result.access_token = user.access_token;
+    return result;
   }
 });

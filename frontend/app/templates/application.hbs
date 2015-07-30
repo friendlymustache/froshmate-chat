@@ -5,13 +5,13 @@
       {{/link-to}}
      </div>
 	{{#if session.isAuthenticated}}
-	<div class="ui item">
+	<div class="ui item hide-mobile">
 		Welcome, {{session.secure.name}}
 	</div>
 	{{/if}}
 
-	<div class="ui borderless right menu" style="width: 30%; border: 0px; box-shadow: none;">
-		<div class="ui secondary item borderless menu">
+	<div class="ui borderless right menu" style="min-width: 30%; border: 0px; box-shadow: none;">
+		<div class="ui secondary three item borderless menu">
 			<div class="ui item">
 				{{#link-to 'faq'  class="ui fade blue basic button"}} FAQ {{/link-to}}
 			</div>
@@ -36,24 +36,21 @@
 </div>
 
 
-<div class = "ui fluid centered container" style="height: 90%">
+<div class = "ui fluid centered container" style="min-height: 80%">
 {{outlet}}
 </div>
 
-<div id="sticky">
-  <div class="ui grid">
+  <div class="ui grid" style="padding-top: 30px">
     <div class="ui centered row">
       <div class="ui divided horizontal footer link list">
         <div class="item">
-          Froshmate
+          {{#link-to 'index'}} Froshmate {{/link-to}}
         </div>
 
         <div class="item">
           v 0.1.1
         </div>
-        {{#link-to 'about' class="item"}}The Team {{/link-to}}
-        {{#link-to 'index'}} Homepage {{/link-to}}
+        {{#link-to 'about' class="item"}} Team {{/link-to}}
       </div>
     </div>
   </div>
-</div>

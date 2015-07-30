@@ -1,10 +1,14 @@
-<div class="ui relaxed list" id="messages-grid" style="height: 90%; padding: 10px; margin-bottom: 0px; overflow-y:scroll">
-	{{#each msg in model.messages}}
-		{{#message-bubble message=msg}}{{/message-bubble}}
-	{{/each}}
+<div class="ui relaxed list" id="messages-grid" style="height: 60vh; padding: 10px; margin-bottom: 0px; overflow-y:scroll">
+	{{#if no_messages }}
+	<div class="ui center aligned message"> Send a message! </div>
+	{{else}}
+		{{#each msg in model.messages}}
+			{{#message-bubble message=msg}}{{/message-bubble}}
+		{{/each}}
+	{{/if}}
 </div>
 
-<div class="ui grid" style="height: 10%; margin: 0px;">
+<div class="ui grid" style="height: 10vh; margin: 0px;">
 	<div class="row" style="height: 100%; padding: 0px">
 		<div class="sixteen wide column" style="padding: 0px; height: 100%">
 				<div class="ui form"  style="height: 100%">

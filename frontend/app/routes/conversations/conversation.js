@@ -14,13 +14,19 @@ export default Ember.Route.extend({
 		});
 	},
 
-	afterModel : function(model) {
-		var messages = model.get('messages').then(function() {
+	setupController : function(controller, model) {
+		this._super(controller, model);
+		/* Scroll to the bottom of the messages after render and also
+		 * after the messages are loaded (so it doesn't matter which comes
+		 * first)
+		 */
+		model.get('messages').then(function(messages) {
 			$("#messages-grid").scrollTop($('#messages-grid').prop("scrollHeight"));
 		});
 
 		Ember.run.scheduleOnce('afterRender', function() {
 			$("#messages-grid").scrollTop($('#messages-grid').prop("scrollHeight"));			
-		})
+		});
+
 	}
 });

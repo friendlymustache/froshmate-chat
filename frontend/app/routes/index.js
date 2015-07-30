@@ -5,5 +5,9 @@ export default Ember.Route.extend({
 		if (this.get('session.isAuthenticated')) {
 			this.transitionTo('conversations');			
 		}
+	},
+
+	setupController : function(controller, model) {
+		this._super(controller, model);
 	}
 });

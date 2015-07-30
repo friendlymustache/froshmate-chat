@@ -6,8 +6,8 @@ export default Ember.Component.extend({
 	dateOutputFormat : 'MMMM Do YYYY, h:mm:ss a',
 	dateInputFormat : '',
 	sent_by_curr_user : function() {
-		return this.get('session.secure.id') == this.get('message.sender_id');
-	}.property('message.sender_id'),
+		return this.get('session.secure.isHighSchooler') == this.get('message.sent_by_high_schooler');
+	}.property('message.sent_by_high_schooler'),
 
 
 	actions : {

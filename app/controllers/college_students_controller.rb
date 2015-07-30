@@ -1,6 +1,10 @@
 class CollegeStudentsController < ApplicationController
   skip_before_action :verify_authenticity_token
-  skip_before_action :authorize!, only: [:create]
+  skip_before_action :authorize!, only: [:create, :index]
+
+  def index
+    render json: CollegeStudent.all
+  end
 
   def create
     access_token = college_student_params[:access_token]
@@ -11,17 +15,32 @@ class CollegeStudentsController < ApplicationController
     # FB user id that corresponds to the access token
     if validate_token(access_token, fb_user_id)
       email = college_student_params['email']
-      @user = CollegeStudent.find_by_email(email)
+      @user = CollegeStudent.find_by_fb_user_id(fb_user_id)
       # User with the provided email doesn't exist, so create
       # a new user
       if @user == nil
         @user = CollegeStudent.create(create_params)
       end
-      json_user = @user.to_json
-      json_user[:isHighSchooler] = false
-      render json: json_user
+      render json: @user
     else
       render json: {}
+    end
+  end
+
+  def show
+    college_student = get_curr_user(params)
+    render json: college_student and return if college_student
+    render json: 'Bad credentials', status: 401
+  end
+
+
+  def update
+    college_student = get_curr_user(params)
+    if college_student
+      college_student.update_attributes(update_params)
+      render json: college_student
+    else
+      render json: 'Bad credentials', status: 401
     end
   end
 
@@ -29,6 +48,20 @@ class CollegeStudentsController < ApplicationController
     def college_student_params
       params.require(:college_student).permit(:email, :fb_user_id, :access_token, :name, :college_id)
     end
+
+    def update_params
+      params.require(:college_student).permit(:email, :name, :college)      
+    end
+
+    def get_curr_user(params)
+      authenticate_or_request_with_http_token do |token, options|
+        college_student = CollegeStudent.find_by_auth_token(token)
+        if college_student && college_student.id = params[:id].to_i
+          return college_student
+        end
+      end      
+    end
+
 
     def validate_token(access_token, fb_user_id)
       # Token that validates that the following

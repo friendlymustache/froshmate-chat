@@ -1,0 +1,42 @@
+{{yield}}
+<div class="ui grid">
+<div class="three column centered row">
+  <div class="ui buttons">
+    <button class="ui button" {{action 'isStudent'}}>High Schooler</button>
+    <div class="or"></div>
+    <button class="ui primary button" {{action 'isCollege'}}>College Student</button>
+  </div>
+</div>
+
+<div class="column centered row">
+  <div class="five wide column">
+    <form class="ui center aligned form" style={{display_form}}>
+        {{#if email_taken}}
+          <div class="ui big red header">
+            An error occurred. Perhaps you already have an account?
+          </div>
+        {{/if}}
+
+
+        {{#if highschooler}}       
+          <div class="field {{if invalid_school 'error'}}">
+            {{input class="ui input" type="text" value=hschool placeholder="School"}}
+          </div>
+        {{/if}}
+
+        <div class="field {{if invalid_email 'error'}}">
+          {{input class="ui input" type="text" value=email placeholder="Email"}}
+        </div>
+        <div class="field {{if invalid_college 'error'}}">
+          {{college-dropdown colleges=colleges prompt=dropdown_prompt action="setCollege"}}
+        </div>
+        <div id="cbutton" class="ui fluid facebook button {{if issigningup 'loading'}}" {{action 'signup'}}>
+          <i class="facebook icon"></i>
+          Sign up
+        </div>
+
+    </form>
+
+  </div>
+</div>
+</div>

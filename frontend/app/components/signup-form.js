@@ -11,6 +11,17 @@ export default Ember.Component.extend({
     return (this.get('highschooler') || this.get('collegestudent'));
   }.property('highschooler', 'collegestudent'),
 
+  dropdown_prompt : function() {
+    return this.get('highschooler') ? "What's your dream college?" : "Select your college";
+  }.property('highschooler'),
+
+  display_form : function() {
+    // First string will be displayed until JQuery slide-down animation overwrites the
+    // style attribute (i.e. until slide-down animation is complete)
+    // Second string will be displayed when form is not visible
+    return this.get('something_selected') ? "overflow: hidden; height: 0px;" : "display: none;";
+  }.property('something_selected'),
+
   invalid_college: false,
   invalid_name: false,
   invalid_school: false,
@@ -21,7 +32,6 @@ export default Ember.Component.extend({
 	/* Validate the HS signup form */
 	validate_highschool: function() {
 	  this.validate_common();
-	  this.set('invalid_college', !this.get("college"));
 	  this.set('invalid_school', !this.get('hschool'));
 	  if(this.get('invalid_name') || this.get('invalid_email') || this.get('invalid_school') || this.get('invalid_college')) {
 	    return false;
@@ -32,7 +42,6 @@ export default Ember.Component.extend({
 	/* Validate the college signup form */
 	validate_college: function() {
 	  this.validate_common();
-	  this.set('invalid_college', !this.get('college'));
 	  var invalid = this.get('invalid_name') || this.get('invalid_email') || this.get('invalid_college');
 	  return !invalid;
 	},
@@ -52,8 +61,7 @@ export default Ember.Component.extend({
 	 	var result = {};
     result.email = this.get('email');
     if (this.get('highschooler')) {
-    	result.school = this.get('hschool');
-    	result.college = this.get('college');
+    	result.high_school_name = this.get('hschool');
     }
     else {
 	    result.college = this.get('college');
@@ -63,31 +71,30 @@ export default Ember.Component.extend({
 
   actions: {
     /* pass function to college-dropdown to allow it to set college */
-    setCollege: function(college_name) {
-      this.set('college', college_name);
+    setCollege: function(college) {
+      this.set('college', college);
     },
 
   	/* Open the student sign-up form */
     isStudent: function() {
-      if(!this.get('collegestudent') || this.get('highschooler')) {
-        Ember.$('.ui.center.aligned.form').transition('slide down');
-      }
-      this.set('highschooler', true);
+      if(!this.get('collegestudent') && !this.get('highschooler')) {
+        Ember.$('.ui.center.aligned.form').slideDown();
+      }      
+      this.set('highschooler', !(this.get('highschooler')));
       this.set('collegestudent', false);
     },
     /* Open the college-student sign-up form */
     isCollege: function() {
-      if(!this.get('highschooler') || this.get('collegestudent')) {
-        Ember.$('.ui.center.aligned.form').transition('slide down');
+      if(!this.get('highschooler') && !this.get('collegestudent')) {
+        Ember.$('.ui.center.aligned.form').slideDown();
       }
       this.set('highschooler', false);
-      this.set('collegestudent', true);
+      this.set('collegestudent', !(this.get('collegestudent')));
     },
 
   	/* Handles the entire signup flow */
     signup: function() {
-      if (this.validate()) {
-      	var user_attributes = this.get_form_attributes();
+      if (this.validate()) {    
 	      var self = this;
 	      /* Determines if the user is logged in */
 	      this.getLoginStatus().then(function() {
@@ -95,32 +102,8 @@ export default Ember.Component.extend({
 			       * the FB login dialog */
 			      self.getAccessToken().then(function(accessToken) {
 			        /* Save the access token to our backend via a POST request */
-			        self.authenticate(accessToken).then(
-			          /* Executes if we were able to get user attributes using the FB auth token */
-			          function(user) {
-			              // NOTE: We could assume here that if the user was able to log in via FB, the authentication attempt
-			              // on the server side will be successful
-			              // See https://github.com/simplabs/ember-simple-auth#authenticators
-			              var user_json = self.merge(user.toJSON(), user_attributes);
-			              self.get('session').authenticate('authenticator:froshmate-authenticator', {'user' : user_json, 'isHighSchooler': self.get('highschooler')}).then(
-			                function(user) {
-			                  self.sendAction('success', user);
-			                },
-			                // NOTE: We should never end up here - this.get('session').authenticate() should always
-			                // resolve
-			                function(reason) {
-			                  // console.log("FB login worked but server login failed...");
-			                  self.sendAction('failure', reason);
-			              	}
-			              );
-			          },
-			          /* Executes if we were unable to log the user in / get her attributes using the FB auth token */
-			          function(reason) {
-			              console.log("Unable to log in user via FB (maybe they cancelled FB auth dialog?)");
-			              self.sendAction('login_failure', reason);
-			          }
-			      );
-			      });
+			        self.getUserAttributes(accessToken).then(self.handleFBLoginSuccess.bind(self), self.handleFBLoginFailure);
+			      }, self.handleFBLoginFailure);
 				});
 	  	}
     },
@@ -131,6 +114,7 @@ export default Ember.Component.extend({
   },
 
   validate_common : function() {
+    this.set('invalid_college', !this.get("college"));
   	var valid_email = this.isEmailValid(this.get('email'));
   	this.set('invalid_email', !valid_email);
   },
@@ -149,11 +133,40 @@ export default Ember.Component.extend({
   },
 
 
-
   /* Facebook auth methods */
 
+  handleFBLoginSuccess : function(user) {
+      var self = this;
+      var datastore = this.get('datastore');
+      var user_json = this.merge(user, this.get_form_attributes());
+      if (this.get('highschooler')) {
+        var college = this.get('college');
+        var user = datastore.createRecord('high-schooler', user_json);
+        user.get('colleges').pushObject(college);
+      }
+      else {
+        var user = datastore.createRecord('college-student', user_json);
+      }
+      user.save().then(function() {
+        self.get('session').authenticate('authenticator:froshmate-authenticator', {'user' : user_json}).then(
+          function(user) {
+            self.sendAction('success', user);
+          },
+          // NOTE: We should never end up here - this.get('session').authenticate() should always
+          // resolve
+          function(reason) {
+            // console.log("FB login worked but server login failed...");
+            self.sendAction('failure', reason);
+          }
+        );
+      });
+  },
 
-
+  handleFBLoginFailure : function(reason) {
+    var self = this;
+    console.log("Unable to log in user via FB (maybe they cancelled FB auth dialog?)");
+    self.sendAction('login_failure', reason);      
+  },
 
 
 
@@ -194,7 +207,6 @@ export default Ember.Component.extend({
    */
   getAccountAttributes: function() {
     var self = this;
-
     return new Ember.RSVP.Promise(function(resolve, reject) {
       FB.api('/me', function(response) {
         if (!response || response.error || Ember.isEmpty(response.email)) {
@@ -206,18 +218,14 @@ export default Ember.Component.extend({
     });
   },
 
-  /* Authenticates the user on the server after they've logged in via
-   * Facebook. Gets the user's account attributes, then
-   * makes a request to a login endpoint on the server */
-  authenticate: function(accessToken) {
-    var datastore = this.get('datastore');
+  /* Gets a user's account attributes from FB */
+  getUserAttributes: function(accessToken) {
     var token = accessToken;
     return this.getAccountAttributes().then(function(accountAttributes) {
       accountAttributes['fb_user_id'] = accountAttributes['id'];
       delete accountAttributes['id'];
       accountAttributes['access_token'] = token;
-      var user = datastore.createRecord('user', accountAttributes);
-      return user;
+      return accountAttributes;
     });
   },
 

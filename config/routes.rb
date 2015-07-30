@@ -21,6 +21,9 @@ Rails.application.routes.draw do
   resources :conversations
   resources :messages
 
+  get 'login' => 'login#index'
+  get 'colleges_for_user' => 'colleges#for_user'
+
   # Example resource route with options:
   #   resources :products do
   #     member do

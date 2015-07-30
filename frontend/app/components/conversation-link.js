@@ -6,11 +6,11 @@ export default Ember.Component.extend({
 	other_user : function() {
 		var conversation = this.get('conversation');
 		var cur_id = this.get('session.secure.id');
-		var student = conversation.get('mentor');
-		var mentor = conversation.get('student');
-		if (student.get('id') == cur_id) {
-			return mentor;
+		var high_schooler = conversation.get('high_schooler');
+		var college_student = conversation.get('college_student');
+		if (high_schooler.get('id') == cur_id) {
+			return college_student;
 		}
-		return student;
+		return high_schooler;
 	}.property('conversation'),
 });

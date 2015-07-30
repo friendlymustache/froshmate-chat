@@ -11,17 +11,18 @@ class MessagesController < ApplicationController
 		# Validate that the POST request to create this message was
 		# made by the user who's supposedly sending this message
 		authenticate_or_request_with_http_token do |token, options|
-			user = User.find_by_auth_token(token)
+			sender = (CollegeStudent.find_by_auth_token(token) || HighSchooler.find_by_auth_token(token))
 			@message = nil
-			if user && message_params[:sender_id] == user.id
+			if sender && message_params[:sender_id] == sender.id
 				# Create the new message
 				@message = Message.create(message_params)
-				recipient = User.find(message_params[:recipient_id])
-				if recipient == nil
-					puts "Couldn't find recipient"
+
+				if sender.class == HighSchooler
+					recipient = CollegeStudent.find(message_params[:recipient_id])
 				else
-					puts "Found recipient successfully"
+					recipient = HighSchooler.find(message_params[:recipient_id])
 				end
+
 				recipient_auth_token = recipient.auth_token
     			$redis.publish "rt-change/#{recipient_auth_token}", @message.to_json
 				puts "Creating message with params: #{message_params}"    			
@@ -32,7 +33,7 @@ class MessagesController < ApplicationController
 
 private
 	def message_params
-		params.require(:message).permit(:sender_id, :recipient_id, :text, :conversation_id)
+		params.require(:message).permit(:sender_id, :recipient_id, :text, :conversation_id, :sent_by_high_schooler)
 	end
 
 

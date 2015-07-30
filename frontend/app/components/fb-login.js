@@ -69,13 +69,10 @@ export default Ember.Component.extend({
   	/* Handles the entire login flow */
     authorize: function() {
       var self = this;
-      console.log("In authorize");
-      debugger;
       /* Determines if the user is logged in */
       this.getLoginStatus().then(
         /* Executes if we were able to determine login status */
         function() {
-          debugger;
           /* Tries to get an access token for the current user, launching
            * the FB login dialog */
           self.getAccessToken().then(function(accessToken) {

@@ -10,8 +10,8 @@
 	height: 100%;
 }
 
-.message-blurb {
-
+.mainpage-form {
+	overflow: hidden;
 }
 
 /* CSS for Homepage */
@@ -22,6 +22,12 @@
 body {
 	    background-color: #EBF4FC;
 
+}
+
+@media (max-width: 600px) {
+	.hide-mobile {
+		display: none !important;
+	}	
 }
 
 #one {
