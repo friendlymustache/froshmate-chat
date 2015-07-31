@@ -10,7 +10,7 @@ export default Ember.Controller.extend({
 		},
 
 		login_failure : function(reason) {
-			debugger;
+			this.transitionTo('signup');
 		},	
 	},
 

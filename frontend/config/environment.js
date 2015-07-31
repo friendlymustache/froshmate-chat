@@ -57,9 +57,9 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-    ENV.host = 'http://chat.froshmate.com'
+    ENV.host = 'http://ec2-52-24-159-62.us-west-2.compute.amazonaws.com:4000'
     // ENV['simple-auth']['crossOriginWhitelist'] = ['http://froshmate.com', 'http://www.froshmate.com']        
-    ENV['simple-auth']['crossOriginWhitelist'] = ['http://chat.froshmate.com']        
+    ENV['simple-auth']['crossOriginWhitelist'] = ['http://chat.froshmate.com', 'http://ec2-52-24-159-62.us-west-2.compute.amazonaws.com:4000']        
 
   }
 
