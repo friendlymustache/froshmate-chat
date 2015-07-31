@@ -8,7 +8,7 @@ export default Ember.Component.extend({
 		var cur_id = this.get('session.secure.id');
 		var high_schooler = conversation.get('high_schooler');
 		var college_student = conversation.get('college_student');
-		if (high_schooler.get('id') == cur_id) {
+		if (this.get('session.secure.isHighSchooler')) {
 			return college_student;
 		}
 		return high_schooler;
