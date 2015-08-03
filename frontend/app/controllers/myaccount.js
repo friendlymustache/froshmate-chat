@@ -33,8 +33,7 @@ export default Ember.Controller.extend({
         var modelName = this.get('session.secure.isHighSchooler') ? 'high-schooler' : 'college-student';
         this.store.find(modelName, this.get('session.secure.id')).then(function(user) {
           user.set('email', new_email);
-          user.save().then(function(result) {
-            debugger;
+          user.save().then(function(/* result */) {
             self.set('new_email', "");
             self.set('email_updated', true);
           });
@@ -45,7 +44,7 @@ export default Ember.Controller.extend({
     requestNewMentor : function() {
       var college = this.get('college');
       if (college) {
-          var user = this.get('model')
+          var user = this.get('model');
           user.get('colleges').pushObject(college);
           user.save();
       }

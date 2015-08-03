@@ -8,7 +8,7 @@ export default Ember.Controller.extend({
 		var websocket = this.get('socket').connect();
 		var auth_token = this.get('session.secure.auth_token');
 
-		websocket.on('connect', function(event) {
+		websocket.on('connect', function(/* event */) {
 			console.log('Socket connected');
 			websocket.emit('auth_token', auth_token);
 		}, this);
@@ -20,8 +20,8 @@ export default Ember.Controller.extend({
 			self.store.push(self.store.normalize('message', msg));	
 			self.force_recompute_of_properties();
 			Ember.run.scheduleOnce('afterRender', this, function() {
-					$("#messages-grid").scrollTop($('#messages-grid').prop("scrollHeight"));
-			})			
+					Ember.$("#messages-grid").scrollTop(Ember.$('#messages-grid').prop("scrollHeight"));
+			});			
 		}, this);
 
 		websocket.on('disconnect', function(event) {
@@ -30,7 +30,6 @@ export default Ember.Controller.extend({
 	},
 	other_user : function() {
 		var conversation = this.get('model');
-		var cur_id = this.get('session.secure.id');
 		var high_schooler = conversation.get('high_schooler');
 		var college_student = conversation.get('college_student');
 		if (this.get('session.secure.isHighSchooler')) {
@@ -40,7 +39,7 @@ export default Ember.Controller.extend({
 	}.property('model'),
 
 	no_messages : function() {
-		return this.get('model.messages.length') == 0;
+		return this.get('model.messages.length') === 0;
 	}.property('model', 'forceRecompute'),
 
 	force_recompute_of_properties : function() {
@@ -61,7 +60,7 @@ export default Ember.Controller.extend({
 
 
 			Ember.run.scheduleOnce('afterRender', this, function() {
-					$("#messages-grid").scrollTop($('#messages-grid').prop("scrollHeight"));
+					Ember.$("#messages-grid").scrollTop(Ember.$('#messages-grid').prop("scrollHeight"));
 			});		
 
 			message.save().then(function(result) {

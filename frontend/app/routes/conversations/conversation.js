@@ -20,12 +20,12 @@ export default Ember.Route.extend({
 		 * after the messages are loaded (so it doesn't matter which comes
 		 * first)
 		 */
-		model.get('messages').then(function(messages) {
-			$("#messages-grid").scrollTop($('#messages-grid').prop("scrollHeight"));
+		model.get('messages').then(function(/* messages */) {
+			Ember.$("#messages-grid").scrollTop(Ember.$('#messages-grid').prop("scrollHeight"));
 		});
 
 		Ember.run.scheduleOnce('afterRender', function() {
-			$("#messages-grid").scrollTop($('#messages-grid').prop("scrollHeight"));			
+			Ember.$("#messages-grid").scrollTop(Ember.$('#messages-grid').prop("scrollHeight"));			
 		});
 
 	}

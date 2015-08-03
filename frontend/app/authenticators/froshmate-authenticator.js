@@ -1,4 +1,3 @@
-/* global FB */
 /* NOTE: See docs at http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Authenticators-Base */
 import Ember from 'ember';
 import Base from 'simple-auth/authenticators/base';
@@ -27,16 +26,16 @@ export default Base.extend({
 
   authenticate(options) {
     var user = this.get_user_fields(options.user);
-    return this.save(user)
+    return this.save(user);
   },
 
-  invalidate(data) {
+  invalidate(/* data */) {
     return Ember.RSVP.resolve();
   },
 
 
   get_user_fields(user) {
-    var result = {}
+    var result = {};
     result.fb_user_id = user.fb_user_id;
     result.access_token = user.access_token;
     return result;

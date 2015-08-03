@@ -36,8 +36,6 @@ export default Ember.Component.extend({
    * rejects if the attributes can't be accessed
    */
   getAccountAttributes: function() {
-    var self = this;
-
     return new Ember.RSVP.Promise(function(resolve, reject) {
       FB.api('/me', function(response) {
         if (!response || response.error || Ember.isEmpty(response.email)) {
@@ -53,15 +51,12 @@ export default Ember.Component.extend({
    * Facebook. Gets the user's account attributes, then
    * makes a request to a login endpoint on the server */
   authenticate: function(accessToken) {
-    var datastore = this.get('datastore');
     var token = accessToken;
     return this.getAccountAttributes().then(function(accountAttributes) {
       accountAttributes['fb_user_id'] = accountAttributes['id'];
       delete accountAttributes['id'];
       accountAttributes['access_token'] = token;
       return accountAttributes;
-      //var user = datastore.createRecord('user', accountAttributes);
-      //return user;
     });
   },
 

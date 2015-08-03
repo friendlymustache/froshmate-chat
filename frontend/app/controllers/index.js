@@ -6,20 +6,19 @@ export default Ember.Controller.extend({
 	    scrolltosignup: function() {
 	      Ember.$.fn.scrollView = function () {
 	          return this.each(function () {
-	              $('html, body').animate({
-	                  scrollTop: $(this).offset().top
+	              Ember.$('html, body').animate({
+	                  scrollTop: Ember.$(this).offset().top
 	              }, 1000);
 	          });
-	      }
+	      };
 	      Ember.$('#scrollto').scrollView();
 	    },
 
-		login_success : function(user) {
+		login_success : function(/* user */) {
 			this.transitionTo('conversations');
 		},
 
-		login_failure : function(reason) {
-			debugger;
+		login_failure : function(/* reason */) {
 		},		    
 	}
 });

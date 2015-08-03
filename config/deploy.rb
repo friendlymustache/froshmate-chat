@@ -2,7 +2,25 @@
 lock '3.4.0'
 
 set :application, 'froshmate-chat'
-set :repo_url, 'https://github.com/friendlymustache/froshmate-chat'
+set :repo_url, 'git@github.com:friendlymustache/froshmate-chat.git'
+set :deploy_to, "/home/ubuntu/froshmate/froshmate-chat"
+
+set :rails_env, "production"
+set :deploy_via, :copy
+set :ssh_options, { 
+	forward_agent: true,
+	paranoid: true, 
+  	keys: "~/.ssh/id_rsa"
+}
+
+set :scm_username, ENV['SCM_USERNAME']
+set :scm_passphrase, ENV['SCM_PASSPHRASE']
+set :branch, "master"
+
+
+set :pty, true
+server "52.24.159.62", roles: [:app, :web, :db], :primary => true
+
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -46,6 +64,6 @@ namespace :deploy do
       #   execute :rake, 'cache:clear'
       # end
     end
-  end
+  end  
 
 end

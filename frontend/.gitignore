@@ -4,6 +4,9 @@
 /dist
 /tmp
 
+# Environment variable file
+.env
+
 # dependencies
 /node_modules
 /bower_components

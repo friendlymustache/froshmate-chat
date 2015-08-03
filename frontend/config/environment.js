@@ -1,5 +1,4 @@
 /* jshint node: true */
-
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'admissions-game',
@@ -35,7 +34,7 @@ module.exports = function(environment) {
 
 
   if (environment === 'development') {
-    ENV.host = 'http://localhost:3000'
+    ENV.host = process.env.DEV_BACKEND_HOST;
     ENV['simple-auth']['crossOriginWhitelist'] = ['http://localhost:3000']    
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
@@ -57,9 +56,9 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-    ENV.host = 'http://ec2-52-24-159-62.us-west-2.compute.amazonaws.com:4000'
+    ENV.host = process.env.PROD_BACKEND_HOST;
     // ENV['simple-auth']['crossOriginWhitelist'] = ['http://froshmate.com', 'http://www.froshmate.com']        
-    ENV['simple-auth']['crossOriginWhitelist'] = ['http://chat.froshmate.com', 'http://ec2-52-24-159-62.us-west-2.compute.amazonaws.com:4000']        
+    ENV['simple-auth']['crossOriginWhitelist'] = ['http://chat.froshmate.com', process.env.PROD_BACKEND_HOST]        
 
   }
 

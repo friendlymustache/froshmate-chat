@@ -5,11 +5,11 @@ export default Ember.Controller.extend({
 		/* NOTE: user will currently be undefined because
 		 * the authenticator doesn't return anything on
 		 * authentication (it just stores session variables) */
-		login_success : function(user) {
+		login_success : function(/* user */) {
 			this.transitionTo('conversations');
 		},
 
-		login_failure : function(reason) {
+		login_failure : function(/* reason */) {
 			this.transitionTo('signup');
 		},	
 	},

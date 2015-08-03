@@ -5,7 +5,6 @@ export default Ember.Component.extend({
 	classNames : ['left-padded', 'item'],
 	other_user : function() {
 		var conversation = this.get('conversation');
-		var cur_id = this.get('session.secure.id');
 		var high_schooler = conversation.get('high_schooler');
 		var college_student = conversation.get('college_student');
 		if (this.get('session.secure.isHighSchooler')) {

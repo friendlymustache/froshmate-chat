@@ -1,6 +1,5 @@
+/* global FB */
 import Ember from 'ember';
-
-
 export default Ember.Component.extend({
   highschooler: false,
   collegestudent: false,
@@ -135,17 +134,18 @@ export default Ember.Component.extend({
 
   /* Facebook auth methods */
 
-  handleFBLoginSuccess : function(user) {
+  handleFBLoginSuccess : function(user_object) {
       var self = this;
       var datastore = this.get('datastore');
-      var user_json = this.merge(user, this.get_form_attributes());
+      var user_json = this.merge(user_object, this.get_form_attributes());
+      var user;
       if (this.get('highschooler')) {
         var college = this.get('college');
-        var user = datastore.createRecord('high-schooler', user_json);
+        user = datastore.createRecord('high-schooler', user_json);
         user.get('colleges').pushObject(college);
       }
       else {
-        var user = datastore.createRecord('college-student', user_json);
+        user = datastore.createRecord('college-student', user_json);
       }
       user.save().then(function() {
         self.get('session').authenticate('authenticator:froshmate-authenticator', {'user' : user_json}).then(
@@ -206,7 +206,6 @@ export default Ember.Component.extend({
    * rejects if the attributes can't be accessed
    */
   getAccountAttributes: function() {
-    var self = this;
     return new Ember.RSVP.Promise(function(resolve, reject) {
       FB.api('/me', function(response) {
         if (!response || response.error || Ember.isEmpty(response.email)) {

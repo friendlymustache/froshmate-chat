@@ -4,7 +4,7 @@ export default Ember.View.extend({
 	tagName : '',
 	didInsertElement : function() {
 		Ember.run.scheduleOnce('afterRender', this, function() {
-			$("#messages-grid").scrollTop($('#messages-grid').prop("scrollHeight"));
+			Ember.$("#messages-grid").scrollTop(Ember.$('#messages-grid').prop("scrollHeight"));
 		});		
 	}
 });

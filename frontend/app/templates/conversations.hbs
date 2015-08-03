@@ -31,7 +31,7 @@
 		<div class="five wide column" id="conversation-list" style="padding:0px; overflow-y: scroll">
 
 			<div class="ui huge relaxed divided selection list" >
-				{{#each convo in model}}
+				{{#each model key="id" as |convo|}}
 					{{#link-to 'conversations.conversation' convo.id class="left-padded item"}} 				
 					{{#conversation-link conversation=convo}}{{/conversation-link}}
 					{{/link-to}}
