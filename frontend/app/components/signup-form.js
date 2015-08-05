@@ -74,17 +74,25 @@ export default Ember.Component.extend({
       this.set('college', college);
     },
 
-  	/* Open the student sign-up form */
+  	/* Toggle the student sign-up form */
     isStudent: function() {
+      if (!this.get('highschooler')) {
+        ga('send', 'event', 'signup', 'open hs signup');        
+      }
+
+
       if(!this.get('collegestudent') && !this.get('highschooler')) {
-        ga('send', 'event', 'signup', 'open hs signup');
         Ember.$('.ui.center.aligned.form').slideDown();
       }      
       this.set('highschooler', !(this.get('highschooler')));
       this.set('collegestudent', false);
     },
-    /* Open the college-student sign-up form */
+    /* Toggle the college-student sign-up form */
     isCollege: function() {
+      if (!this.get('collegestudent')) {
+        ga('send', 'event', 'signup', 'open college signup');        
+      }
+
       if(!this.get('highschooler') && !this.get('collegestudent')) {
         ga('send', 'event', 'signup', 'open college signup');      
         Ember.$('.ui.center.aligned.form').slideDown();
