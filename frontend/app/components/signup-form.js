@@ -76,8 +76,8 @@ export default Ember.Component.extend({
 
   	/* Open the student sign-up form */
     isStudent: function() {
-      ga('send', 'event', 'signup', 'click', 'open hs signup');
       if(!this.get('collegestudent') && !this.get('highschooler')) {
+        ga('send', 'event', 'signup', 'open hs signup');
         Ember.$('.ui.center.aligned.form').slideDown();
       }      
       this.set('highschooler', !(this.get('highschooler')));
@@ -85,8 +85,8 @@ export default Ember.Component.extend({
     },
     /* Open the college-student sign-up form */
     isCollege: function() {
-      ga('send', 'event', 'signup', 'click', 'open college signup');      
       if(!this.get('highschooler') && !this.get('collegestudent')) {
+        ga('send', 'event', 'signup', 'open college signup');      
         Ember.$('.ui.center.aligned.form').slideDown();
       }
       this.set('highschooler', false);

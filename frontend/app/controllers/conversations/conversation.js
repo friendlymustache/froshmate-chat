@@ -49,7 +49,7 @@ export default Ember.Controller.extend({
 
 	actions : {
 		send_message : function() {		
-            ga('send', 'event', 'conversation', 'send message');                
+            ga('send', 'event', 'conversation', 'send message', this.get('model.id'));                
 			var self = this;
 			var text = this.get('message_text');
 			var sender_id = this.get('session.secure.id');

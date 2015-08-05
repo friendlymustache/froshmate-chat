@@ -21,7 +21,7 @@ module.exports = function(environment) {
       'style-src': "'self' 'unsafe-inline' fonts.googleapis.com",
       'img-src': "*",
       'connect-src' : "*",
-      'script-src' : "'self' 'unsafe-inline' www.google-analytics.com connect.facebook.net/en_US/sdk.js",
+      'script-src' : "'self' 'unsafe-inline' www.google-analytics.com connect.facebook.net/en_US/sdk.js graph.facebook.com",
       'default-src' : "*",
     },        
   };
@@ -43,7 +43,8 @@ module.exports = function(environment) {
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
     ENV.googleAnalytics = {
         webPropertyId: 'UA-65187916-1',
-        tracker: 'analytics_debug.js'
+        tracker: 'analytics_debug.js',
+        cookieDomain : 'none',
     };    
   }
 
