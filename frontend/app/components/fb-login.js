@@ -1,4 +1,4 @@
-/* global FB */
+/* global FB, ga */
 import Ember from 'ember';
 
 export default Ember.Component.extend({
@@ -75,6 +75,7 @@ export default Ember.Component.extend({
             self.authenticate(accessToken).then(
               /* Executes if we were able to get user attributes using the FB auth token */
               function(user) {
+                  ga('send', 'event', 'login', 'fb login', 'success');                
                   // NOTE: We could assume here that if the user was able to log in via FB, the authentication attempt
                   // on the server side will be successful
                   // See https://github.com/simplabs/ember-simple-auth#authenticators
@@ -91,6 +92,7 @@ export default Ember.Component.extend({
               },
               /* Executes if we were unable to log the user in / get her attributes using the FB auth token */
               function(reason) {
+                  ga('send', 'event', 'login', 'fb login', 'failure');                                
                   console.log("Unable to log in user via FB (maybe they cancelled FB auth dialog?)");
                   self.sendAction('login_failure', reason);
               }

@@ -1,3 +1,4 @@
+/* global ga */
 /* NOTE: See docs at http://ember-simple-auth.com/ember-simple-auth-api-docs.html#SimpleAuth-Authenticators-Base */
 import Ember from 'ember';
 import Base from 'simple-auth/authenticators/base';
@@ -30,6 +31,7 @@ export default Base.extend({
   },
 
   invalidate(/* data */) {
+    ga('send', 'event', 'logout', 'fb logout', 'success');          
     return Ember.RSVP.resolve();
   },
 

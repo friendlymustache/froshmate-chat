@@ -1,4 +1,4 @@
-/* global FB */
+/* global FB, ga */
 import Ember from 'ember';
 export default Ember.Component.extend({
   highschooler: false,
@@ -76,6 +76,7 @@ export default Ember.Component.extend({
 
   	/* Open the student sign-up form */
     isStudent: function() {
+      ga('send', 'event', 'signup', 'click', 'open hs signup');
       if(!this.get('collegestudent') && !this.get('highschooler')) {
         Ember.$('.ui.center.aligned.form').slideDown();
       }      
@@ -84,6 +85,7 @@ export default Ember.Component.extend({
     },
     /* Open the college-student sign-up form */
     isCollege: function() {
+      ga('send', 'event', 'signup', 'click', 'open college signup');      
       if(!this.get('highschooler') && !this.get('collegestudent')) {
         Ember.$('.ui.center.aligned.form').slideDown();
       }
@@ -139,13 +141,16 @@ export default Ember.Component.extend({
       var datastore = this.get('datastore');
       var user_json = this.merge(user_object, this.get_form_attributes());
       var user;
+      ga('send', 'event', 'signup', 'fb login', 'success');      
       if (this.get('highschooler')) {
         var college = this.get('college');
         user = datastore.createRecord('high-schooler', user_json);
         user.get('colleges').pushObject(college);
+        ga('send', 'event', 'signup', 'click', 'high school signup');      
       }
       else {
         user = datastore.createRecord('college-student', user_json);
+        ga('send', 'event', 'signup', 'click', 'college student signup');      
       }
       user.save().then(function() {
         self.get('session').authenticate('authenticator:froshmate-authenticator', {'user' : user_json}).then(
@@ -164,6 +169,7 @@ export default Ember.Component.extend({
 
   handleFBLoginFailure : function(reason) {
     var self = this;
+    ga('send', 'event', 'signup', 'fb login', 'failure');      
     console.log("Unable to log in user via FB (maybe they cancelled FB auth dialog?)");
     self.sendAction('login_failure', reason);      
   },

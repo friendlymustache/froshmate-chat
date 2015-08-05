@@ -21,7 +21,7 @@ module.exports = function(environment) {
       'style-src': "'self' 'unsafe-inline' fonts.googleapis.com",
       'img-src': "*",
       'connect-src' : "*",
-      'script-src' : "*",
+      'script-src' : "'self' 'unsafe-inline' www.google-analytics.com connect.facebook.net/en_US/sdk.js",
       'default-src' : "*",
     },        
   };
@@ -35,12 +35,16 @@ module.exports = function(environment) {
 
   if (environment === 'development') {
     ENV.host = process.env.DEV_BACKEND_HOST;
-    ENV['simple-auth']['crossOriginWhitelist'] = ['http://localhost:3000']    
+    ENV['simple-auth']['crossOriginWhitelist'] = ['http://localhost:3000'];    
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
+    ENV.googleAnalytics = {
+        webPropertyId: 'UA-65187916-1',
+        tracker: 'analytics_debug.js'
+    };    
   }
 
   if (environment === 'test') {
@@ -58,7 +62,11 @@ module.exports = function(environment) {
   if (environment === 'production') {
     ENV.host = process.env.PROD_BACKEND_HOST;
     // ENV['simple-auth']['crossOriginWhitelist'] = ['http://froshmate.com', 'http://www.froshmate.com']        
-    ENV['simple-auth']['crossOriginWhitelist'] = ['http://chat.froshmate.com', process.env.PROD_BACKEND_HOST]        
+    ENV['simple-auth']['crossOriginWhitelist'] = ['http://chat.froshmate.com', process.env.PROD_BACKEND_HOST]  
+    ENV.googleAnalytics = {
+        webPropertyId: 'UA-65187916-4',
+        tracker: 'analytics.js'
+    };    
 
   }
 
