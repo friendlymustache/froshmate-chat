@@ -48,6 +48,18 @@ Rails.application.configure do
   # when problems arise.
   config.log_level = :debug
 
+
+    # Allow CORS from froshmate.com
+  config.middleware.insert_before 0, "Rack::Cors" do
+      allow do
+        origins 'chat.froshmate.com', 'http://54.148.34.184', '54.148.34.184'
+        resource '*',
+          :headers => :any,
+          :methods => [:get, :post, :delete, :put, :options, :head],
+          :max_age => 0
+      end
+    end 
+
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
 
