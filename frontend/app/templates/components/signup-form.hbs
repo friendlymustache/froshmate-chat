@@ -28,7 +28,7 @@
           {{input class="ui input" type="text" value=email placeholder="Email"}}
         </div>
         <div class="field {{if invalid_college 'error'}}">
-          {{college-dropdown colleges=colleges prompt=dropdown_prompt action="setCollege"}}
+          {{college-dropdown items=colleges prompt=dropdown_prompt action="setCollege"}}
         </div>
         <div id="cbutton" class="ui fluid facebook button {{if issigningup 'loading'}}" {{action 'signup'}}>
           <i class="facebook icon"></i>

@@ -34,6 +34,7 @@ module.exports = function(environment) {
 
 
   if (environment === 'development') {
+    ENV.fb_app_id = process.env.DEV_APP_KEY;
     ENV.host = process.env.DEV_BACKEND_HOST;
     ENV['simple-auth']['crossOriginWhitelist'] = ['http://localhost:3000'];    
     // ENV.APP.LOG_RESOLVER = true;
@@ -61,6 +62,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
+    ENV.fb_app_id = process.env.PROD_APP_KEY;    
     ENV.host = process.env.PROD_BACKEND_HOST;
     // ENV['simple-auth']['crossOriginWhitelist'] = ['http://froshmate.com', 'http://www.froshmate.com']        
     ENV['simple-auth']['crossOriginWhitelist'] = ['http://chat.froshmate.com', process.env.PROD_BACKEND_HOST]  

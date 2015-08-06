@@ -51,28 +51,43 @@
       {{# if session.secure.isHighSchooler}}
         <div class="ui tab" data-tab="my-schools">
           <h4 class="ui horizontal divider header">
-            Target Schools
-          </h4>
-          {{#each model.colleges key="id" as |college|}}
-          <p class="ui medium header">
-            {{college.name}}
-          </p>
+            Current Conversations
+          </h4>                    
+          {{#each colleges_with_conversations as |target_school|}}
+            <div class="ui header"> {{target_school.college.name}} </div>
+            {{#each target_school.conversations key="id" as |convo| }}
+              {{#link-to 'conversations.conversation' convo}}
+                {{conversation-link conversation=convo}}
+              {{/link-to}}
+            {{/each}}
           {{/each}}
+
+          <h4 class="ui horizontal divider header">
+            Pending Mentor Requests
+          </h4>   
+          {{#each colleges_with_mentor_requests as |target_school| }}
+            <div class="ui header"> {{target_school.college.name}} </div>
+            {{#each target_school.mentor_requests as |mentor_request|}}
+              <div> Intended major: {{mentor_request.intended_major}} </div>
+              <div> Activities: {{mentor_request.activities}} </div>
+              <a {{action "destroy" mentor_request}}> <i class="circular red x icon"/> </a>
+              <br>
+            {{/each}}
+          {{/each}}
+
           <h4 class="ui horizontal divider header">
             Request a mentor at another school
           </h4>
           <form class="ui center aligned form">
             <div class="ten wide field">
-              {{college-dropdown colleges=filteredColleges prompt='Select college' action="setCollege"}}
-            </div>
-            <!--
-            <div class="ten wide field">
-              <input type="text" name="major" placeholder="What major?">
+              {{college-dropdown items=filteredColleges prompt='Select college' action="setCollege"}}
             </div>
             <div class="ten wide field">
-              <textarea rows="2" name="major" placeholder="What activites are you interested in?"></textarea>
+              {{input placeholder="What major?" value=intended_major}}
             </div>
-            -->
+            <div class="ten wide field">
+              {{textarea rows="2" placeholder="What activites are you interested in?" value=activities}}
+            </div>
             <button class="ui primary button" type="submit" {{action "requestNewMentor"}}>Request mentor</button>
           </form>
         </div>

@@ -1,6 +1,7 @@
 class CollegeStudent < ActiveRecord::Base
   belongs_to :college
   belongs_to :high_school
+  has_many :conversations
   validates :fb_user_id, uniqueness: true
 
 before_save :ensure_auth_token

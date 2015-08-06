@@ -3,7 +3,17 @@ class CollegeStudentsController < ApplicationController
   skip_before_action :authorize!, only: [:create, :index]
 
   def index
-    render json: CollegeStudent.all
+    college = College.find(params[:college_id])
+    render json: college.college_students
+  end
+
+  def validate
+    confirmation_code = params[:confimration_code]
+    student = CollegeStudent.find_by_confirmation_code(confimration_code)
+    if student
+      student.confirmed = true
+      student.save
+    end
   end
 
   def create
@@ -60,22 +70,5 @@ class CollegeStudentsController < ApplicationController
           return college_student
         end
       end      
-    end
-
-
-    def validate_token(access_token, fb_user_id)
-      # Token that validates that the following
-      # token-validation request is coming from our app
-      # See https://developers.facebook.com/docs/facebook-login/access-tokens#apptokens
-      app_access_token = RestClient.get('https://graph.facebook.com/oauth/access_token?client_id=125554834447442&client_secret=b29f2dbcffc857e5de21dc7400a6bd85&grant_type=client_credentials&redirect_uri=none')
-      app_access_token.slice!("access_token=")
-
-      # Verify the access token
-      # See https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/v2.4#checktoken
-      validate_token_url = "https://graph.facebook.com/debug_token?input_token=#{access_token}&access_token=#{app_access_token}"
-      auth_response = JSON.parse(RestClient.get(URI.encode(validate_token_url)))
-      token_fb_id = auth_response['data']['user_id']
-      return fb_user_id.to_s == token_fb_id.to_s
-
     end
 end

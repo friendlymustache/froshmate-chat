@@ -1,0 +1,11 @@
+<div class="ui segment">
+	Activities: {{model.activities}}
+	{{college-dropdown items=college_students prompt="Pick a mentor" action="set_mentor"}}
+
+	<div class="ui buttons">
+	  <button class="ui positive button" {{action "approve_request"}} > Approve </button>
+	  <div class="or"></div>	  
+	  <button class="ui negative button" {{action "deny_request"}}> Deny </button>	  
+	</div>
+
+</div>

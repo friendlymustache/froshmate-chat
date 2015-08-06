@@ -20,9 +20,12 @@ Rails.application.routes.draw do
   resources :colleges
   resources :conversations
   resources :messages
+  resources :target_colleges
+  resources :mentor_requests
 
   get 'login' => 'login#index'
   get 'colleges_for_user' => 'colleges#for_user'
+  get 'validate/:confirmation_code' => 'college_students#validate'
 
   # Example resource route with options:
   #   resources :products do

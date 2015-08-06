@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150729220208) do
+ActiveRecord::Schema.define(version: 20150806095606) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,8 +23,11 @@ ActiveRecord::Schema.define(version: 20150729220208) do
     t.string   "fb_user_id"
     t.integer  "high_school_id"
     t.integer  "college_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.boolean  "admin",             default: false
+    t.string   "confimration_code"
+    t.boolean  "confirmed",         default: false
   end
 
   create_table "colleges", force: :cascade do |t|
@@ -37,6 +40,7 @@ ActiveRecord::Schema.define(version: 20150729220208) do
     t.datetime "updated_at",                        null: false
     t.integer  "high_schooler_id"
     t.integer  "college_student_id"
+    t.integer  "target_college_id"
   end
 
   create_table "high_school", force: :cascade do |t|
@@ -52,6 +56,15 @@ ActiveRecord::Schema.define(version: 20150729220208) do
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.string   "high_school_name"
+  end
+
+  create_table "mentor_requests", force: :cascade do |t|
+    t.integer  "priority"
+    t.integer  "target_college_id"
+    t.string   "intended_major"
+    t.string   "activities"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   create_table "messages", force: :cascade do |t|

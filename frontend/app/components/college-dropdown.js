@@ -6,16 +6,16 @@ export default Ember.Component.extend({
     Ember.$('.ui.search.selection.dropdown').dropdown({
       onChange:function(value,text)
         {
-          var college = self.get('colleges').filterBy('name', text)[0];
-          self.sendAction('action', college);
+          var item = self.get('items').filterBy('name', text)[0];
+          self.sendAction('action', item);
         }
       });
 
   },
 
   actions : {
-    selectCollege : function(college) {
-      this.sendAction('action', college);
+    selectItem : function(item) {
+      this.sendAction('action', item);
     }
   }
 

@@ -1,6 +1,7 @@
 class HighSchooler < ActiveRecord::Base
   has_many :colleges, through: :target_colleges
   has_many :target_colleges
+  has_many :conversations
   validates :fb_user_id, uniqueness: :true
   belongs_to :high_school
 

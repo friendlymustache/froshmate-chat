@@ -6,5 +6,6 @@ export default DS.Model.extend({
   access_token : DS.attr('string'),
   name : DS.attr('string'),
   high_school_name : DS.attr('string'),
-  colleges: DS.hasMany('college')
+  colleges: DS.hasMany('college'),
+  target_colleges: DS.hasMany('target-college')
 });

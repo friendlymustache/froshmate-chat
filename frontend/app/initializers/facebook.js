@@ -1,11 +1,12 @@
 /* global FB */
+import config from 'admissions-game/config/environment';
 export default {
   name: 'facebook',
 
   initialize: function() {
     var fbAsyncInit = function() {
 	    FB.init({
-	      appId      : '125554834447442',
+	      appId      : config.fb_app_id,
 	      xfbml      : true,
 	      version    : 'v2.4'
 	    });

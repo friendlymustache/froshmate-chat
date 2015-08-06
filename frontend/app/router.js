@@ -17,6 +17,9 @@ Router.map(function() {
   this.route('profiles');
   this.route('myaccount');
   this.route('index2');
+  this.route('mentor_requests', function() {
+    this.route('mentor_request', {path: "/:id"});
+  });
 });
 
 export default Router;

@@ -1,13 +1,13 @@
 {{yield}}
 
 <div class="field">
-   <div class="ui search selection dropdown" id="college">
-     <input type="hidden" name="college">
+   <div class="ui search selection dropdown">
+     <input type="hidden" name="item">
      <i class="dropdown icon"></i>
      <div class="default text">{{prompt}}</div>
      <div class="menu">
-       {{#each colleges key="id" as |college|}}
-            <div class="item" {{action "selectCollege" college}}>{{college.name}}</div>
+       {{#each items key="id" as |item|}}
+            <div class="item" {{action "selectItem" item}}>{{item.name}}</div>
        {{/each}}
      </div>
   </div>

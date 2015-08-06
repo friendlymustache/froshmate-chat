@@ -2,6 +2,7 @@ class Conversation < ActiveRecord::Base
 	has_many :messages
 	belongs_to :high_schooler
 	belongs_to :college_student
+	belongs_to :target_college
 	validates :high_schooler_id, uniqueness: {scope: :college_student_id}
 
 	def self.get_by_token(token)

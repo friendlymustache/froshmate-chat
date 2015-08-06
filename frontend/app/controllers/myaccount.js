@@ -14,6 +14,18 @@ export default Ember.Controller.extend({
     // }.bind(userCollegeIds));
   }.property('model'),
 
+   colleges_with_conversations : function() {
+    return this.get('model.target_colleges').filter(function(tc) {
+      return tc.get('conversations').length != 0;
+    })
+  }.property('model', 'model.target_colleges'),
+
+   colleges_with_mentor_requests : function() {
+    return this.get('model.target_colleges').filter(function(tc) {
+      return tc.get('mentor_requests').length != 0;
+    })
+  }.property('model', 'model.target_colleges'),  
+
   isEmailValid : function(email) {
     var regex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$";
     return (email !== undefined && email.match(regex) != null);
@@ -43,11 +55,30 @@ export default Ember.Controller.extend({
 
     requestNewMentor : function() {
       var college = this.get('college');
-      if (college) {
-          var user = this.get('model');
-          user.get('colleges').pushObject(college);
-          user.save();
+      var curr_id = this.get('session.secure.id');
+      var self = this;
+      if (college) {        
+          // Create a mentor request for the college embedded in a "new" target
+          // college
+          var properties = this.getProperties('intended_major', 'activities');
+          var mentor_request = this.store.createRecord('mentor-request', properties);
+          var target_college = this.store.createRecord('target-college', {college: college, high_schooler_id : curr_id});
+          target_college.get('mentor_requests').pushObject(mentor_request);
+          target_college.save().then(function(tc) {
+            tc.get('mentor_requests').filterBy('isNew').invoke('unloadRecord');
+            this.set('activities', "");
+            this.set('intended_major', "");
+          }.bind(this));
+          // var user = this.get('model');
+          // user.get('colleges').pushObject(college);
+          // user.save();
       }
-    }
+    },
+
+    destroy : function(mentor_request) {
+      this.store.deleteRecord(mentor_request);
+      mentor_request.save();
+
+    },
   }
 });

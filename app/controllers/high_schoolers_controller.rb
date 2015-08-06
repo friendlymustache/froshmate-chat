@@ -4,7 +4,6 @@ class HighSchoolersController < ApplicationController
 
   def create
     college_ids = high_schooler_params[:college_ids]
-    puts "Colleg IDS: #{college_ids}"
     access_token = high_schooler_params[:access_token]
     fb_user_id = high_schooler_params[:fb_user_id]
     create_params = high_schooler_params.except(:access_token)
@@ -16,7 +15,11 @@ class HighSchoolersController < ApplicationController
       # User with the provided FB user id doesn't exist, so create
       # a new user
       if @user == nil
-        @user = HighSchooler.create(create_params)
+        @user = HighSchooler.create!(create_params)
+        college_ids.each do |college_id|
+          target_college = @user.target_colleges.last
+          target_college.mentor_requests.create!(priority: 0)
+        end
       end
       render json: @user
     else
@@ -61,21 +64,5 @@ class HighSchoolersController < ApplicationController
 
     def update_params
       params.require(:high_schooler).permit(:email, :name, :high_school_name)      
-    end
-
-    def validate_token(access_token, fb_user_id)
-      # Token that validates that the following
-      # token-validation request is coming from our app
-      # See https://developers.facebook.com/docs/facebook-login/access-tokens#apptokens
-      app_access_token = RestClient.get('https://graph.facebook.com/oauth/access_token?client_id=125554834447442&client_secret=b29f2dbcffc857e5de21dc7400a6bd85&grant_type=client_credentials&redirect_uri=none')
-      app_access_token.slice!("access_token=")
-
-      # Verify the access token
-      # See https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/v2.4#checktoken
-      validate_token_url = "https://graph.facebook.com/debug_token?input_token=#{access_token}&access_token=#{app_access_token}"
-      auth_response = JSON.parse(RestClient.get(URI.encode(validate_token_url)))
-      token_fb_id = auth_response['data']['user_id']
-      return fb_user_id.to_s == token_fb_id.to_s
-
     end
 end

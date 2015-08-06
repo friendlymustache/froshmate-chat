@@ -1,0 +1,33 @@
+<div class="ui compact celled grid" style="height: 80vh; margin-bottom: 0px">
+	<div class="middle aligned row" style="height: 12%">
+		<div class="five wide column"> 
+			<div class="ui centered header"> 
+				<div class="centered content"> <i class="blue exchange icon"/>  Mentor Requests </div> 
+			</div>
+		</div>
+		<div class="eleven wide column"> 
+			<div class="ui centered header sixteen wide column"> Request Details </div> 
+		</div>
+	</div>
+
+	<div class="row" style="height: 88%">
+		<div class="five wide column" id="conversation-list" style="padding:0px; overflow-y: scroll">
+
+			<div class="ui large relaxed divided selection list" >
+				{{#each model as |mentor_request|}}
+				<div class="item">
+					{{#link-to 'mentor_requests.mentor_request' mentor_request class="ui header"}} 
+						{{mentor_request.target_college.college.name}} 
+					{{/link-to}}
+					{{mentor_request.intended_major}} <br>				
+				</div>
+				{{/each}}
+				<div class="ui divider" style="margin-top: 0px"></div>
+			</div>
+		</div>
+
+		<div class="eleven wide column" style="padding:0px; height: 100%">
+			{{outlet }}
+		</div>
+	</div>
+</div>
