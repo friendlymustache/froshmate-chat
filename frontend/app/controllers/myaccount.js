@@ -54,31 +54,34 @@ export default Ember.Controller.extend({
     },
 
     requestNewMentor : function() {
-      var college = this.get('college');
-      var curr_id = this.get('session.secure.id');
-      var self = this;
-      if (college) {        
-          // Create a mentor request for the college embedded in a "new" target
-          // college
-          var properties = this.getProperties('intended_major', 'activities');
-          var mentor_request = this.store.createRecord('mentor-request', properties);
-          var target_college = this.store.createRecord('target-college', {college: college, high_schooler_id : curr_id});
-          target_college.get('mentor_requests').pushObject(mentor_request);
-          target_college.save().then(function(tc) {
-            tc.get('mentor_requests').filterBy('isNew').invoke('unloadRecord');
-            this.set('activities', "");
-            this.set('intended_major', "");
-          }.bind(this));
-          // var user = this.get('model');
-          // user.get('colleges').pushObject(college);
-          // user.save();
-      }
+      var college = this.get('college'); 
+      var curr_user = this.store.find('high-schooler', this.get('session.secure.id')).then(function(user) {
+        if (college) {        
+            // Create a mentor request for the college embedded in a "new" target
+            // college
+            var properties = this.getProperties('intended_major', 'activities');
+            var mentor_request = this.store.createRecord('mentor-request', properties);
+            var target_college = this.store.createRecord('target-college', {college: college, high_schooler : user});
+            target_college.get('mentor_requests').pushObject(mentor_request);
+            target_college.save().then(function(tc) {
+              tc.get('mentor_requests').filterBy('isNew').invoke('unloadRecord');
+              this.set('activities', "");
+              this.set('intended_major', "");
+            }.bind(this));
+            // var user = this.get('model');
+            // user.get('colleges').pushObject(college);
+            // user.save();
+        }
+      }.bind(this));
+
+
     },
 
     destroy : function(mentor_request) {
-      this.store.deleteRecord(mentor_request);
-      mentor_request.save();
-
+      if (confirm("Delete this request?")) {
+        this.store.deleteRecord(mentor_request);
+        mentor_request.save();
+      }
     },
   }
 });

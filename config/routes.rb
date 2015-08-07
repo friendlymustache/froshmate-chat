@@ -25,7 +25,7 @@ Rails.application.routes.draw do
 
   get 'login' => 'login#index'
   get 'colleges_for_user' => 'colleges#for_user'
-  get 'validate/:confirmation_code' => 'college_students#validate'
+  get 'confirm/:confirmation_code' => 'college_students#confirm'
 
   # Example resource route with options:
   #   resources :products do

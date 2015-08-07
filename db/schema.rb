@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20150806095606) do
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
     t.boolean  "admin",             default: false
-    t.string   "confimration_code"
+    t.string   "confirmation_code"
     t.boolean  "confirmed",         default: false
   end
 

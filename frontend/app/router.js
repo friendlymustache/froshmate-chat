@@ -20,6 +20,7 @@ Router.map(function() {
   this.route('mentor_requests', function() {
     this.route('mentor_request', {path: "/:id"});
   });
+  this.route('confirm', {path : "/confirm/:confirmation_code"});
 });
 
 export default Router;

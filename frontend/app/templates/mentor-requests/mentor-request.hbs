@@ -1,11 +1,21 @@
 <div class="ui segment">
-	Activities: {{model.activities}}
+	<div class="ui header"> Student </div>
+	<p> {{model.target_college.high_schooler.name}} </p>
+	<div class="ui header"> Activities </div>
+	<p> {{model.activities}} </p>
+	
+	<div class="ui form">
+	<div class="field">
 	{{college-dropdown items=college_students prompt="Pick a mentor" action="set_mentor"}}
+	</div>
 
-	<div class="ui buttons">
-	  <button class="ui positive button" {{action "approve_request"}} > Approve </button>
-	  <div class="or"></div>	  
-	  <button class="ui negative button" {{action "deny_request"}}> Deny </button>	  
+	<div class="field">
+		<div class="ui buttons">
+		  <button class="ui positive button" {{action "approve_request"}} > Approve </button>
+		  <div class="or"></div>	  
+		  <button class="ui negative button" {{action "deny_request"}}> Deny </button>	  
+		</div>
+	</div>
 	</div>
 
 </div>

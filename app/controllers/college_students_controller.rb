@@ -7,12 +7,15 @@ class CollegeStudentsController < ApplicationController
     render json: college.college_students
   end
 
-  def validate
-    confirmation_code = params[:confimration_code]
-    student = CollegeStudent.find_by_confirmation_code(confimration_code)
+  def confirm
+    confirmation_code = params[:confirmation_code]
+    student = CollegeStudent.find_by_confirmation_code(confirmation_code)
     if student
       student.confirmed = true
       student.save
+      render json: student
+    else
+      render json: 'Bad request', status: 401
     end
   end
 
@@ -30,6 +33,7 @@ class CollegeStudentsController < ApplicationController
       # a new user
       if @user == nil
         @user = CollegeStudent.create(create_params)
+        CollegeStudentMailer.welcome_email(@user).deliver_now
       end
       render json: @user
     else

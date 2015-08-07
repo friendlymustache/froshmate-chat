@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p> Hey <%= @user.name %>, </p>    
+    <p>Thanks for signing up for Froshmate!</p>
+    <p>    
+       We're working on finding you a mentor at <%= @user.colleges.first.name %>
+       and will be in touch as soon as we find someone.
+    </p>
+
+    <p>
+       To help us find a better match for you, add some information on
+       your intended major + activites <%= link_to "here", @url %>.
+    </p>
+
+    <p>We're really excited to work with you!</p>
+    <p>Best,</p>
+    <p>Sid</p>
+  </body>
+</html>

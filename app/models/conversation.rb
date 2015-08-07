@@ -1,5 +1,5 @@
 class Conversation < ActiveRecord::Base
-	has_many :messages
+	has_many :messages, dependent: :destroy
 	belongs_to :high_schooler
 	belongs_to :college_student
 	belongs_to :target_college

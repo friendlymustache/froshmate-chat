@@ -1,7 +1,7 @@
 class HighSchooler < ActiveRecord::Base
   has_many :colleges, through: :target_colleges
-  has_many :target_colleges
-  has_many :conversations
+  has_many :target_colleges, dependent: :destroy
+  has_many :conversations, dependent: :destroy
   validates :fb_user_id, uniqueness: :true
   belongs_to :high_school
 

@@ -6,25 +6,17 @@ export default Ember.Route.extend({
 	},
 
 	setupController : function(controller, model) {
-		this._super(controller, model);
-		
-		var filtered_students = new Ember.RSVP.Promise(function(resolve, reject) {
+		this._super(controller, model);	
 
-			// Get college corresponding to current mentor request
-			var curr_request_college = model.get('target_college.college');
-			var existing_students = model.get('target_college.conversations').getEach('college_student.id');
+		// Get college corresponding to current mentor request
+		var college_id = model.get('target_college.college.id');
+		var existing_students = model.get('target_college.conversations').getEach('college_student.id');
 
-			var college_students = this.store.find('college-student', {college_id:  curr_request_college.get('id')});
-			
-			var filterer = function(students) {
-				var filtered_students = students.filter(function(student) {
-					debugger;
-					return existing_students.indexOf(student.get('id')) == -1;
-				});
-				resolve(filtered_students);
-			};			
-			college_students.then(filterer).catch(function() {reject(); });
-		});
-		controller.set('college_students', filtered_students);
+		var filterer = function(student) {
+			return student.get('college.id') == college_id && existing_students.indexOf(student.get('id')) == -1; 
+		};
+
+		var college_students = this.store.filter('college-student', {college_id:  college_id}, filterer);
+		controller.set('college_students', college_students);
 	},
 });

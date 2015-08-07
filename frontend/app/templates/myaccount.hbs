@@ -31,7 +31,7 @@
         {{/if}}
         <!--
         <div id="five"></div>
-        <form class="ui center aligned form">
+        <div class="ui center aligned form">
           <div class="ten wide field">
             <h4 class="ui horizontal divider header">
               <i class="lock icon"></i>Password
@@ -45,40 +45,54 @@
             <input type="text" name="last-name" placeholder="Retype your password">
           </div>
           <div class="ui primary button" type="submit">Update your password</div>
-        </form>
+        </div>
         -->
       </div>
       {{# if session.secure.isHighSchooler}}
         <div class="ui tab" data-tab="my-schools">
           <h4 class="ui horizontal divider header">
             Current Conversations
-          </h4>                    
-          {{#each colleges_with_conversations as |target_school|}}
-            <div class="ui header"> {{target_school.college.name}} </div>
-            {{#each target_school.conversations key="id" as |convo| }}
-              {{#link-to 'conversations.conversation' convo}}
-                {{conversation-link conversation=convo}}
-              {{/link-to}}
+          </h4>    
+          <div class="ui divided list">                
+            {{#each colleges_with_conversations as |target_school|}}
+              <div class="item">
+                <div class="ui header" style="padding-bottom: 10px"> {{target_school.college.name}} </div>
+                {{#each target_school.conversations key="id" as |convo| }}
+                  {{#link-to 'conversations.conversation' convo}}
+                    {{conversation-link conversation=convo}}
+                  {{/link-to}}
+                {{/each}}
+              </div>
             {{/each}}
-          {{/each}}
+          </div>
 
           <h4 class="ui horizontal divider header">
             Pending Mentor Requests
           </h4>   
-          {{#each colleges_with_mentor_requests as |target_school| }}
-            <div class="ui header"> {{target_school.college.name}} </div>
-            {{#each target_school.mentor_requests as |mentor_request|}}
-              <div> Intended major: {{mentor_request.intended_major}} </div>
-              <div> Activities: {{mentor_request.activities}} </div>
-              <a {{action "destroy" mentor_request}}> <i class="circular red x icon"/> </a>
-              <br>
-            {{/each}}
-          {{/each}}
+
+          <div class="ui relaxed divided list">                
+            {{#each colleges_with_mentor_requests as |target_school| }}
+            <div class="item">
+              <div class="ui header" style="padding-bottom: 10px"> {{target_school.college.name}} </div>
+              {{#each target_school.mentor_requests as |mentor_request|}}
+                <i  {{action "destroy" mentor_request}} class="link circular middle aligned left floated red x icon"/>              
+                <div class="content">
+                  <div class="header"> Major </div>
+                  <div class="description">{{mentor_request.intended_major}}</div>
+                  <div class="header"> Activities </div> 
+                  <div class="description"> {{mentor_request.activities}}</div>
+                </div>
+              {{/each}}
+            </div>
+            {{/each}}            
+          </div>
+
+
 
           <h4 class="ui horizontal divider header">
             Request a mentor at another school
           </h4>
-          <form class="ui center aligned form">
+          <div class="ui center aligned form">
             <div class="ten wide field">
               {{college-dropdown items=filteredColleges prompt='Select college' action="setCollege"}}
             </div>
@@ -89,7 +103,7 @@
               {{textarea rows="2" placeholder="What activites are you interested in?" value=activities}}
             </div>
             <button class="ui primary button" type="submit" {{action "requestNewMentor"}}>Request mentor</button>
-          </form>
+          </div>
         </div>
       {{/if}}
     </div>
