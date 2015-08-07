@@ -4,11 +4,15 @@ export default Ember.Component.extend({
   highschooler: false,
   collegestudent: false,
   issigningup: false,
-  college: "",
+  college: undefined,
 
   something_selected: function() {
     return (this.get('highschooler') || this.get('collegestudent'));
   }.property('highschooler', 'collegestudent'),
+
+  show_email_suffix : function() {
+    return this.get('college') !== undefined && this.get('collegestudent');
+  }.property('college', 'collegestudent'),
 
   dropdown_prompt : function() {
     return this.get('highschooler') ? "What's your dream college?" : "Select your college";
@@ -53,12 +57,20 @@ export default Ember.Component.extend({
 		return this.validate_college();
 	},
 
+  get_email : function() {
+    var email = this.get('email');
+    if (this.get('collegestudent')) {
+      email += this.get('college.email_suffix');      
+    }
+    return email;
+  },
+
 	/* Get a JSON object containing the form attributes
 	 * for the current high schooler/college student
 	 */
 	 get_form_attributes : function() {
 	 	var result = {};
-    result.email = this.get('email');
+    result.email = this.get_email();
     if (this.get('highschooler')) {
     	result.high_school_name = this.get('hschool');
     }
@@ -124,7 +136,7 @@ export default Ember.Component.extend({
 
   validate_common : function() {
     this.set('invalid_college', !this.get("college"));
-  	var valid_email = this.isEmailValid(this.get('email'));
+  	var valid_email = this.isEmailValid(this.get_email());
   	this.set('invalid_email', !valid_email);
   },
 

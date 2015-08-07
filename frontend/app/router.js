@@ -14,9 +14,7 @@ Router.map(function() {
   this.route('login');
   this.route('signup');
   this.route('about');
-  this.route('profiles');
-  this.route('myaccount');
-  this.route('index2');
+  this.route('myaccount');  
   this.route('mentor_requests', function() {
     this.route('mentor_request', {path: "/:id"});
   });

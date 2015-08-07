@@ -16,7 +16,9 @@
             An error occurred. Perhaps you already have an account?
           </div>
         {{/if}}
-
+        <div class="field {{if invalid_college 'error'}}">
+          {{college-dropdown items=colleges prompt=dropdown_prompt action="setCollege"}}
+        </div>
 
         {{#if highschooler}}       
           <div class="field {{if invalid_school 'error'}}">
@@ -25,11 +27,18 @@
         {{/if}}
 
         <div class="field {{if invalid_email 'error'}}">
+
+        <div class="ui right labeled input">
           {{input class="ui input" type="text" value=email placeholder="Email"}}
+          {{#if show_email_suffix}}
+          <div class="ui label">
+            {{college.email_suffix}}
+          </div>
+          {{/if}}          
         </div>
-        <div class="field {{if invalid_college 'error'}}">
-          {{college-dropdown items=colleges prompt=dropdown_prompt action="setCollege"}}
+
         </div>
+
         <div id="cbutton" class="ui fluid facebook button {{if issigningup 'loading'}}" {{action 'signup'}}>
           <i class="facebook icon"></i>
           Sign up

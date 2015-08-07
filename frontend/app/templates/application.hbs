@@ -11,13 +11,19 @@
 	{{/if}}
 
 	<div class="ui borderless right menu" style="min-width: 30%; border: 0px; box-shadow: none;">
-		<div class="ui secondary three item borderless menu">
+		<div class="ui secondary {{if session.secure.admin 'four' 'three'}} three item borderless menu">
+			{{#if session.secure.admin}}
+				<div class="ui item">
+					{{#link-to 'mentor_requests' class="ui fade blue basic button"}} Admin {{/link-to}}
+				</div>
+			{{/if}}
+
 			<div class="ui item">
 				{{#link-to 'faq'  class="ui fade blue basic button"}} FAQ {{/link-to}}
 			</div>
 			{{#if session.isAuthenticated}}
 				<div class="ui item">
-					{{#link-to 'myaccount' class="ui fade blue basic button"}} My Profile {{/link-to}}
+					{{#link-to 'myaccount' class="ui fade blue basic button"}} Profile {{/link-to}}
 				</div>
 			{{else}}
 				<div class="ui item">
