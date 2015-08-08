@@ -4,7 +4,7 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <p> Hey <%= @user.name %>, </p>    
+    <p> Hey <%= @user.name.split.first %>, </p>    
     <p>Thanks for signing up for Froshmate!</p>
     <p>    
        We're working on finding you a mentor at <%= @user.colleges.first.name %>

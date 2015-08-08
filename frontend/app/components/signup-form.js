@@ -60,6 +60,7 @@ export default Ember.Component.extend({
   get_email : function() {
     var email = this.get('email');
     if (this.get('collegestudent')) {
+      email += "@";
       email += this.get('college.email_suffix');      
     }
     return email;

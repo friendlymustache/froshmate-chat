@@ -27,11 +27,11 @@ export default Ember.Controller.extend({
 			var model = this.get('model');
 			model.set('college_student', college_student);		
 			model.save().then(function(result) {
-				var ids = this.get('controllers.mentor-requests.model').getEach('id');
 				// Remove current request from the store (it's already been deleted
 				// on the backend)
 				this.store.deleteRecord(model);
-				
+				// Get all the remaining request ids
+				var ids = this.get('controllers.mentor-requests.model').getEach('id');				
 				if (ids.length != 0) {
 					this.transitionToRoute('mentor_requests.mentor_request', ids[0]);
 				}

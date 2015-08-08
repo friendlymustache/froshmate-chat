@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p> Hey <%= @mentee.name %>, </p>
+
+    <p> Thanks for waiting - we've found you a mentor, 
+        <%= @mentor.name.split.first %> from <%=@mentor.college.name%>! 
+    </p>
+
+    <p>    
+        Click <%= link_to "here", @conversation_url %> to start chatting :)
+    </p> 
+
+    <p>Best,</p>
+    <p>Sid</p>
+  </body>
+</html>

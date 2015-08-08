@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p> Hey <%= @mentor.name.split.first %>, </p>
+
+    <p> Meet your new mentee, <%= @mentee.name.split.first %>! </p>
+
+    <p> <%= @mentee.name.split.first %> wants to major in <%= @mentor_request.intended_major %> 
+      and is interested in <%= @mentor_request.activities %>.
+
+    <p>    
+        Click <%= link_to "here", @conversation_url %> to start chatting :)
+    </p> 
+
+    <p>Best,</p>
+    <p>Sid</p>
+  </body>
+</html>
