@@ -20,7 +20,7 @@ class HighSchoolersController < ApplicationController
           target_college = @user.target_colleges.last
           target_college.mentor_requests.create!(priority: 0)
         end
-        HighSchoolerMailer.welcome_email(@user).deliver_later
+        # HighSchoolerMailer.welcome_email(@user).deliver_later
       end
       render json: @user
     else

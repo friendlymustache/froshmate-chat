@@ -407,6 +407,8 @@ college_attrs = [
 {email_suffix: "trincoll.edu", name: "Trinity College"}
 ]
 
+college_attrs = college_attrs.sort_by {|hsh| hsh[:name]}
+
 college_attrs.each do |attrs|
-    College.create(attrs)
+    college = College.create(attrs)
 end

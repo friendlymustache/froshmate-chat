@@ -20,7 +20,7 @@ namespace :admin do
   		puts "Vansh has not signed up yet"  		
   	end
 
-  	vishal = CollegeStudent.where(email: "v.talasani@uchicago.edu", confirmed: true)
+  	vishal = CollegeStudent.where(email: "vtalasani@uchicago.edu", confirmed: true)
   	if vishal.length != 0
 		vishal = vishal.first
   		vishal.admin = true

@@ -116,17 +116,17 @@ export default Ember.Component.extend({
 
   	/* Handles the entire signup flow */
     signup: function() {
-      this.set('issigningup', true);
       if (this.validate()) {    
 	      var self = this;
 	      /* Determines if the user is logged in */
 	      this.getLoginStatus().then(function() {
+            self.set('issigningup', true);
 			      /* Tries to get an access token for the current user, launching
 			       * the FB login dialog */
 			      self.getAccessToken().then(function(accessToken) {
 			        /* Save the access token to our backend via a POST request */
-			        self.getUserAttributes(accessToken).then(self.handleFBLoginSuccess.bind(self), self.handleFBLoginFailure);
-			      }, self.handleFBLoginFailure);
+			        self.getUserAttributes(accessToken).then(self.handleFBLoginSuccess.bind(self), self.handleFBLoginFailure.bind(self));
+			      }, self.handleFBLoginFailure.bind(self));
 				});
 	  	}
     },
@@ -159,7 +159,6 @@ export default Ember.Component.extend({
   /* Facebook auth methods */
 
   handleFBLoginSuccess : function(user_object) {
-      var self = this;
       var datastore = this.get('datastore');
       var user_json = this.merge(user_object, this.get_form_attributes());
       var user;
@@ -175,27 +174,26 @@ export default Ember.Component.extend({
         ga('send', 'event', 'signup', 'click', 'college student signup');      
       }
       user.save().then(function() {
-        self.get('session').authenticate('authenticator:froshmate-authenticator', {'user' : user_json}).then(
+        this.get('session').authenticate('authenticator:froshmate-authenticator', {'user' : user_json}).then(
           function(user) {            
-            self.set('issigningup', false);
-            self.sendAction('success', user);
-          },
+            this.set('issigningup', false);
+            this.sendAction('success', user);
+          }.bind(this),
           // NOTE: We should never end up here - this.get('session').authenticate() should always
           // resolve
           function(reason) {
             // console.log("FB login worked but server login failed...");
-            self.set('issigningup', false);
-            self.sendAction('failure', reason);
-          }
+            this.set('issigningup', false);
+            this.sendAction('failure', reason);
+          }.bind(this)
         );
-      });
+      }.bind(this));
   },
 
   handleFBLoginFailure : function(reason) {
-    var self = this;
     ga('send', 'event', 'signup', 'fb login', 'failure');      
     console.log("Unable to log in user via FB (maybe they cancelled FB auth dialog?)");
-    self.sendAction('login_failure', reason);      
+    this.sendAction('login_failure', reason);      
     this.set('issigningup', false);
   },
 
