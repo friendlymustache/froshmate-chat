@@ -120,7 +120,6 @@ export default Ember.Component.extend({
       if (this.validate()) {    
 	      var self = this;
 	      /* Determines if the user is logged in */
-	      this.getLoginStatus().then(function() {
             self.set('issigningup', true);
 			      /* Tries to get an access token for the current user, launching
 			       * the FB login dialog */
@@ -128,7 +127,6 @@ export default Ember.Component.extend({
 			        /* Save the access token to our backend via a POST request */
 			        self.getUserAttributes(accessToken).then(self.handleFBLoginSuccess.bind(self), self.handleFBLoginFailure.bind(self));
 			      }, self.handleFBLoginFailure.bind(self));
-				});
 	  	}
     },
 

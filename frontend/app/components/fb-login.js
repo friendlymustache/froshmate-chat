@@ -64,41 +64,36 @@ export default Ember.Component.extend({
   	/* Handles the entire login flow */
     authorize: function() {
       var self = this;
-      /* Determines if the user is logged in */
-      this.getLoginStatus().then(
-        /* Executes if we were able to determine login status */
-        function() {
-          /* Tries to get an access token for the current user, launching
-           * the FB login dialog */
-          self.getAccessToken().then(function(accessToken) {
-            /* Save the access token to our backend via a POST request */
-            self.authenticate(accessToken).then(
-              /* Executes if we were able to get user attributes using the FB auth token */
-              function(user) {
-                  ga('send', 'event', 'login', 'fb login', 'success');                
-                  // NOTE: We could assume here that if the user was able to log in via FB, the authentication attempt
-                  // on the server side will be successful
-                  // See https://github.com/simplabs/ember-simple-auth#authenticators
-                  self.get('session').authenticate('authenticator:froshmate-authenticator', {'user' : user}).then(
-                    function(user) {
-                      self.sendAction('success', user);
-                    },
-                    // NOTE: We should never end up here - this.get('session').authenticate() should always
-                    // resolve
-                    function(reason) {
-                      // console.log("FB login worked but server login failed...");
-                      self.sendAction('failure', reason);
-                  });
-              },
-              /* Executes if we were unable to log the user in / get her attributes using the FB auth token */
-              function(reason) {
-                  ga('send', 'event', 'login', 'fb login', 'failure');                                
-                  console.log("Unable to log in user via FB (maybe they cancelled FB auth dialog?)");
-                  self.sendAction('login_failure', reason);
-              }
-          );
-          });
-        });
+      /* Tries to get an access token for the current user, launching
+       * the FB login dialog */
+      self.getAccessToken().then(function(accessToken) {
+        /* Save the access token to our backend via a POST request */
+        self.authenticate(accessToken).then(
+          /* Executes if we were able to get user attributes using the FB auth token */
+          function(user) {
+              ga('send', 'event', 'login', 'fb login', 'success');                
+              // NOTE: We could assume here that if the user was able to log in via FB, the authentication attempt
+              // on the server side will be successful
+              // See https://github.com/simplabs/ember-simple-auth#authenticators
+              self.get('session').authenticate('authenticator:froshmate-authenticator', {'user' : user}).then(
+                function(user) {
+                  self.sendAction('success', user);
+                },
+                // NOTE: We should never end up here - this.get('session').authenticate() should always
+                // resolve
+                function(reason) {
+                  // console.log("FB login worked but server login failed...");
+                  self.sendAction('failure', reason);
+              });
+          },
+          /* Executes if we were unable to log the user in / get her attributes using the FB auth token */
+          function(reason) {
+              ga('send', 'event', 'login', 'fb login', 'failure');                                
+              console.log("Unable to log in user via FB (maybe they cancelled FB auth dialog?)");
+              self.sendAction('login_failure', reason);
+          }
+      );
+      });
     },
 
     invalidateSession : function() {
