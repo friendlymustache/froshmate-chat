@@ -9,8 +9,12 @@
 	    	<img class="ui centered medium image" src="assets/images/logo.png">	
 			Request additional mentors or edit your profile {{#link-to 'myaccount'}} here {{/link-to}}    
 		{{else}}
+			{{#if session.secure.confirmed}}
+			Your account has been confirmed, we'll be in touch as soon as we find you a mentee <i class="smile icon"/>			
+			{{else}}
 			Watch for a confirmation email from us - once you've confirmed your account, we'll get
 			started ASAP finding you a mentee <i class="smile icon"/>
+			{{/if}}
 	    	<img class="ui centered medium image" src="assets/images/logo.png">	
 			Feel free to edit your profile {{#link-to 'myaccount'}} here {{/link-to}} 
 		{{/if}}
