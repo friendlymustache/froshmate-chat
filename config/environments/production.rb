@@ -52,7 +52,7 @@ Rails.application.configure do
     # Allow CORS from froshmate.com
   config.middleware.insert_before 0, "Rack::Cors" do
       allow do
-        origins ENV['PROD_APP_URL'], "http://#{ENV['PROD_IP_ADDRESS']}", ENV['PROD_IP_ADDRESS']
+        origins "www.#{ENV['PROD_APP_URL']}", ENV['PROD_APP_URL'], "http://#{ENV['PROD_IP_ADDRESS']}", ENV['PROD_IP_ADDRESS']
         resource '*',
           :headers => :any,
           :methods => [:get, :post, :delete, :put, :options, :head],

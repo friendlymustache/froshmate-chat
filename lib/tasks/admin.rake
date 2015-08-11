@@ -2,6 +2,7 @@ namespace :admin do
   task :create => :environment do
   	sid = CollegeStudent.where(email: "smurching@caltech.edu", confirmed: true)
   	if sid.length != 0
+		sid = sid.first
   		sid.admin = true
   		sid.save
   		puts "Made Sid an admin"  		
@@ -11,6 +12,7 @@ namespace :admin do
 
   	vansh = CollegeStudent.where(email: "vkkumar@caltech.edu", confirmed: true)
   	if vansh.length != 0
+		vansh = vansh.first
   		vansh.admin = true
   		vansh.save
   		puts "Made Vansh an admin"
@@ -20,6 +22,7 @@ namespace :admin do
 
   	vishal = CollegeStudent.where(email: "v.talasani@uchicago.edu", confirmed: true)
   	if vishal.length != 0
+		vishal = vishal.first
   		vishal.admin = true
   		vishal.save
   		puts "Made Vishal an admin"  		

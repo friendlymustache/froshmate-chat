@@ -33,7 +33,7 @@ class CollegeStudentsController < ApplicationController
       # a new user
       if @user == nil
         @user = CollegeStudent.create(create_params)
-        CollegeStudentMailer.welcome_email(@user).deliver_now
+        CollegeStudentMailer.welcome_email(@user).deliver_later
       end
       render json: @user
     else
