@@ -116,6 +116,7 @@ export default Ember.Component.extend({
 
   	/* Handles the entire signup flow */
     signup: function() {
+      this.set('issigningup', true);
       if (this.validate()) {    
 	      var self = this;
 	      /* Determines if the user is logged in */
@@ -175,13 +176,15 @@ export default Ember.Component.extend({
       }
       user.save().then(function() {
         self.get('session').authenticate('authenticator:froshmate-authenticator', {'user' : user_json}).then(
-          function(user) {
+          function(user) {            
+            self.set('issigningup', false);
             self.sendAction('success', user);
           },
           // NOTE: We should never end up here - this.get('session').authenticate() should always
           // resolve
           function(reason) {
             // console.log("FB login worked but server login failed...");
+            self.set('issigningup', false);
             self.sendAction('failure', reason);
           }
         );
@@ -193,6 +196,7 @@ export default Ember.Component.extend({
     ga('send', 'event', 'signup', 'fb login', 'failure');      
     console.log("Unable to log in user via FB (maybe they cancelled FB auth dialog?)");
     self.sendAction('login_failure', reason);      
+    this.set('issigningup', false);
   },
 
 

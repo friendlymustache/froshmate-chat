@@ -44,7 +44,6 @@ class ApplicationController < ActionController::Base
 	end
 
 	def render_unauthorized
-	  puts "UNAUTHORIZED REQUEST!!!"
 	  self.headers['WWW-Authenticate'] = 'Token realm="Application"'
 	  render json: 'Bad credentials', status: 401 and return
 	end
