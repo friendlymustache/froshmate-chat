@@ -41,8 +41,10 @@ class HighSchoolersController < ApplicationController
     if high_schooler
       high_schooler.update_attributes(update_params)
       college_ids = high_schooler_params[:college_ids]
-      college_ids.each do |id|
-        TargetCollege.create(college_id: id, high_schooler_id: high_schooler.id)
+      if college_ids
+        college_ids.each do |id|
+          TargetCollege.create(college_id: id, high_schooler_id: high_schooler.id)
+        end
       end
       render json: high_schooler
     else
