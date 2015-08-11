@@ -2,16 +2,19 @@
 <div class="ui container">
 	<div class="ui center aligned segment">
 		<i class="green check icon"/> Thanks for signing up! <br>
-		We're working on finding
-		{{#if session.secure.isHighSchooler}} a mentor {{else}} mentees {{/if}}
-		for you and will be in touch very soon <i class="smile icon"/> <br>
-    	<img class="ui centered medium image" src="assets/images/logo.png">	
-		{{#if session.secure.isHighSchooler}} 
-			Request additional mentors or edit 
+		{{#if session.secure.isHighSchooler}}
+			We're working on finding
+			{{#if session.secure.isHighSchooler}} a mentor {{else}} mentees {{/if}}
+			for you and will be in touch very soon <i class="smile icon"/> <br>
+	    	<img class="ui centered medium image" src="assets/images/logo.png">	
+			Request additional mentors or edit your profile {{#link-to 'myaccount'}} here {{/link-to}}    
 		{{else}}
-			Feel free to edit
+			Watch for a confirmation email from us - once you've confirmed your account, we'll get
+			started ASAP finding you a mentee <i class="smile icon"/>
+	    	<img class="ui centered medium image" src="assets/images/logo.png">	
+			Feel free to edit your profile {{#link-to 'myaccount'}} here {{/link-to}} 
 		{{/if}}
-		your profile {{#link-to 'myaccount'}} here {{/link-to}}    	
+	
 	</div>
 </div>
 {{else}}

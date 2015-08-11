@@ -6,7 +6,9 @@ class HighSchoolersController < ApplicationController
     college_ids = high_schooler_params[:college_ids]
     access_token = high_schooler_params[:access_token]
     fb_user_id = high_schooler_params[:fb_user_id]
-    create_params = high_schooler_params.except(:access_token)
+    create_params = high_schooler_params.except(:access_token, :mentor_requests)
+    # Grab the intended major from the passed-in mentor request
+    intended_major = high_schooler_params[:mentor_requests].first[:intended_major]
     # Check that the provided FB user ID matches the
     # FB user id that corresponds to the access token
     if validate_token(access_token, fb_user_id)
@@ -18,7 +20,7 @@ class HighSchoolersController < ApplicationController
         @user = HighSchooler.create!(create_params)
         college_ids.each do |college_id|
           target_college = @user.target_colleges.last
-          target_college.mentor_requests.create!(priority: 0)
+          target_college.mentor_requests.create!(priority: 0, intended_major: intended_major)
         end
         HighSchoolerMailer.welcome_email(@user).deliver_later
       end
@@ -60,7 +62,7 @@ class HighSchoolersController < ApplicationController
     end
 
     def high_schooler_params
-      params.require(:high_schooler).permit(:email, :fb_user_id, :access_token, :name, :high_school_name, :college_ids => [])
+      params.require(:high_schooler).permit(:email, :fb_user_id, :access_token, :name, :high_school_name, college_ids: [], mentor_requests: [:intended_major, :created_at, :activities, :target_college_id, :priority, :college_student_id] )
     end
 
     def update_params

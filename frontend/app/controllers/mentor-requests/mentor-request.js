@@ -7,6 +7,19 @@ export default Ember.Controller.extend({
 		return this.get('college_student') !== undefined;
 	}.property('college_student'),
 
+	college_students_items : function() {
+		var promise = this.get('college_students').then(function(college_students) {
+				college_students.forEach(function(student) {
+					var name = student.get('name');
+					name += ", major: " + student.get('major');
+					student.set('name', name);
+				});
+				return college_students;
+			}.bind(this));
+		return DS.PromiseArray.create({promise: promise});
+	}.property('college_students'),
+
+
 	actions : {
 		deny_request : function() {
 			var model = this.get('model');

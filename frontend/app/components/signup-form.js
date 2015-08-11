@@ -78,6 +78,7 @@ export default Ember.Component.extend({
     }
     else {
 	    result.college = this.get('college');
+      result.major = this.get('major');
     }
     return result;
 	 },
@@ -154,6 +155,28 @@ export default Ember.Component.extend({
     return (email !== undefined && email.match(regex) != null);
   },
 
+  onSignup : function(result) {    
+    var user_json = result.toJSON();
+    this.get('session').authenticate('authenticator:froshmate-authenticator', {'user' : user_json}).then(
+      function(user) {            
+        this.set('issigningup', false);
+        this.sendAction('success', user);
+      }.bind(this),
+      // NOTE: We should never end up here - this.get('session').authenticate() should always
+      // resolve
+      function(reason) {
+        // console.log("FB login worked but server login failed...");
+        this.set('issigningup', false);
+        this.sendAction('failure', reason);
+      }.bind(this)
+    );
+  },
+
+  onSignupFailure : function(reason) {
+    debugger;
+    this.set('issigningup', false);
+    alert("It looks like you already have an account! Try logging in above");
+  },
 
   /* Facebook auth methods */
 
@@ -164,29 +187,21 @@ export default Ember.Component.extend({
       ga('send', 'event', 'signup', 'fb login', 'success');      
       if (this.get('highschooler')) {
         var college = this.get('college');
+
+        // Add the selected target college to the user's colleges
         user = datastore.createRecord('high-schooler', user_json);
         user.get('colleges').pushObject(college);
+
+        // Create a mentor request object with the current major
+        var mentor_request = datastore.createRecord('mentor-request', {intended_major: this.get('major')});
+        user.get('mentor_requests').pushObject(mentor_request);
         ga('send', 'event', 'signup', 'click', 'high school signup');      
       }
       else {
         user = datastore.createRecord('college-student', user_json);
         ga('send', 'event', 'signup', 'click', 'college student signup');      
       }
-      user.save().then(function() {
-        this.get('session').authenticate('authenticator:froshmate-authenticator', {'user' : user_json}).then(
-          function(user) {            
-            this.set('issigningup', false);
-            this.sendAction('success', user);
-          }.bind(this),
-          // NOTE: We should never end up here - this.get('session').authenticate() should always
-          // resolve
-          function(reason) {
-            // console.log("FB login worked but server login failed...");
-            this.set('issigningup', false);
-            this.sendAction('failure', reason);
-          }.bind(this)
-        );
-      }.bind(this));
+      user.save().then(this.onSignup.bind(this)).catch(this.onSignupFailure.bind(this));
   },
 
   handleFBLoginFailure : function(reason) {

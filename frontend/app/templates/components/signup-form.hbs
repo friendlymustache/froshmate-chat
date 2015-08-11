@@ -20,6 +20,10 @@
           {{college-dropdown items=colleges prompt=dropdown_prompt action="setCollege"}}
         </div>
 
+        <div class="field">
+          {{input class="ui input" type="text" value=major placeholder="Major"}}        
+        </div>
+
         {{#if highschooler}}       
           <div class="field {{if invalid_school 'error'}}">
             {{input class="ui input" type="text" value=hschool placeholder="School"}}

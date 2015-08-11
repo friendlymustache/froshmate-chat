@@ -4,7 +4,7 @@ class CollegeStudentsController < ApplicationController
 
   def index
     college = College.find(params[:college_id])
-    render json: college.college_students
+    render json: college.college_students.where(confirmed: true)
   end
 
   def confirm
@@ -12,7 +12,7 @@ class CollegeStudentsController < ApplicationController
     student = CollegeStudent.find_by_confirmation_code(confirmation_code)
     if student
       student.confirmed = true
-      student.save
+      student.save!
       render json: student
     else
       render json: 'Bad request', status: 401
@@ -37,7 +37,7 @@ class CollegeStudentsController < ApplicationController
       end
       render json: @user
     else
-      render json: {}
+      render json: 'Bad credentials', status: 401
     end
   end
 
@@ -66,7 +66,7 @@ class CollegeStudentsController < ApplicationController
     end
 
     def college_student_params
-      params.require(:college_student).permit(:email, :fb_user_id, :access_token, :name, :college_id)
+      params.require(:college_student).permit(:email, :fb_user_id, :access_token, :name, :college_id, :major, :activities)
     end
 
     def update_params

@@ -16,6 +16,10 @@ class LoginController < ApplicationController
 		      isHighSchooler = (@user.class == HighSchooler)
 			  json_user = @user.attributes			  
 			  json_user[:isHighSchooler] = isHighSchooler
+			  if not isHighSchooler
+			  	json_user[:college_name] = @user.college.name
+			  end
+
 		      return render json: json_user
 		  end
 		end

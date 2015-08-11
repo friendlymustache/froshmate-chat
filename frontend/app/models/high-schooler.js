@@ -7,5 +7,6 @@ export default DS.Model.extend({
   name : DS.attr('string'),
   high_school_name : DS.attr('string'),
   colleges: DS.hasMany('college'),
-  target_colleges: DS.hasMany('target-college')
+  target_colleges: DS.hasMany('target-college'),
+  mentor_requests : DS.hasMany('mentor-request')
 });

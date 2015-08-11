@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+
   didInsertElement: function() {
     var self = this;
     Ember.$('.ui.search.selection.dropdown').dropdown({

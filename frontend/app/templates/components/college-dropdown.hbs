@@ -6,7 +6,7 @@
      <i class="dropdown icon"></i>
      <div class="default text">{{prompt}}</div>
      <div class="menu">
-       {{#each items key="id" as |item|}}
+       {{#each items as |item|}}
             <div class="item" {{action "selectItem" item}}>{{item.name}}</div>
        {{/each}}
      </div>
