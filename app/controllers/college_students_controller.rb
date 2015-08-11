@@ -70,7 +70,7 @@ class CollegeStudentsController < ApplicationController
     end
 
     def update_params
-      params.require(:college_student).permit(:email, :name, :college)      
+      params.require(:college_student).permit(:email, :name, :college)
     end
 
     def get_curr_user(params)
@@ -79,6 +79,6 @@ class CollegeStudentsController < ApplicationController
         if college_student && college_student.id = params[:id].to_i
           return college_student
         end
-      end      
+      end
     end
 end
