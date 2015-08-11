@@ -27,11 +27,11 @@ class CollegeStudentsController < ApplicationController
     # Check that the provided FB user ID matches the
     # FB user id that corresponds to the access token
     if validate_token(access_token, fb_user_id)
-      email = college_student_params['email']
+      email = college_student_params[:email].gsub(/,/, "")
       @user = CollegeStudent.find_by_fb_user_id(fb_user_id)
       # User with the provided email doesn't exist, so create
       # a new user
-      if @user == nil
+      if @user == nil && email_valid(college_student_params[:college_id], college_student_params[:email])
         @user = CollegeStudent.create(create_params)
         CollegeStudentMailer.welcome_email(@user).deliver_later
       end
@@ -59,6 +59,12 @@ class CollegeStudentsController < ApplicationController
   end
 
   private
+    def email_valid(college_id, email)
+      email_validator = Regexp.new("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")      
+      regex = Regexp.new(College.find(college_id).email_suffix)
+      return regex.match(email) && email_validator.match(email)
+    end
+
     def college_student_params
       params.require(:college_student).permit(:email, :fb_user_id, :access_token, :name, :college_id)
     end

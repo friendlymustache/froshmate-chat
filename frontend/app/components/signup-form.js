@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   collegestudent: false,
   issigningup: false,
   college: undefined,
+  email : "",
 
   something_selected: function() {
     return (this.get('highschooler') || this.get('collegestudent'));
@@ -59,7 +60,7 @@ export default Ember.Component.extend({
 
   get_email : function() {
     var email = this.get('email');
-    if (this.get('collegestudent')) {
+    if (this.get('collegestudent') && email !== undefined && email.length > 0) {
       email += "@";
       email += this.get('college.email_suffix');      
     }
