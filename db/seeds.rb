@@ -8,6 +8,7 @@
 
 college_attrs = [
 {email_suffix: "unwsp.edu", name: "University of Northwestern: ​St. Paul"},
+{email_suffix: "babson.edu", name: "Babson College"},
 {email_suffix: "adrian.edu", name: "Adrian College"},
 {email_suffix: "franklincollege.edu", name: "Franklin College"},
 {email_suffix: "bethelcollege.edu", name: "Bethel College"},
@@ -218,7 +219,7 @@ college_attrs = [
 {email_suffix: "yale.edu", name: "Yale University"},
 {email_suffix: "msmary.edu", name: "Mount Saint Mary's University"},
 {email_suffix: "udallas.edu", name: "University of Dallas"},
-{email_suffix: "harvard.edu", name: "Harvard University"},
+{email_suffix: "college.harvard.edu", name: "Harvard University"},
 {email_suffix: "nd.edu", name: "University of Notre Dame"},
 {email_suffix: "jhu.edu", name: "Johns Hopkins University"},
 {email_suffix: "lmu.edu", name: "Loyola Marymount University"},
