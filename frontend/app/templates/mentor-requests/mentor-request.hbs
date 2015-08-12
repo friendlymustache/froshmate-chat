@@ -1,8 +1,16 @@
 <div class="ui segment">
+	<div class="ui header"> Major: </div>
+	<p> {{model.intended_major}} </p>
 	<div class="ui header"> Student </div>
 	<p> {{model.target_college.high_schooler.name}} </p>
 	<div class="ui header"> Activities </div>
 	<p> {{model.activities}} </p>
+
+	<p> 
+		{{model.target_college.high_schooler.name}} has
+		{{model.target_college.conversations.length}} conversations with students 
+		at {{model.target_college.college.name}}	
+	</p>
 	
 	<div class="ui form">
 	<div class="field">

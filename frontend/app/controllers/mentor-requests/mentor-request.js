@@ -9,15 +9,13 @@ export default Ember.Controller.extend({
 
 	college_students_items : function() {
 		var promise = this.get('college_students').then(function(college_students) {
-				var result = []
 				college_students.forEach(function(student) {
-					var obj = new Ember.Object();
-					var name = student.get('name');
-					name += ", major: " + student.get('major');
-					obj.set('name', name);
-					result.push(obj);
+					if (!student.get('hasDirtyAttributes')) {
+						name = student.get('name') + ", major: " + student.get('major');
+						student.set('name', name);
+					}
 				});
-				return result;
+				return college_students;
 			}.bind(this));
 		return DS.PromiseArray.create({promise: promise});
 	}.property('college_students'),
@@ -45,7 +43,7 @@ export default Ember.Controller.extend({
 			model.save().then(function(result) {
 				// Remove current request from the store (it's already been deleted
 				// on the backend)
-				this.store.deleteRecord(model);
+				this.get('controllers.mentor-requests.model').removeObject(model);
 				// Get all the remaining request ids
 				var ids = this.get('controllers.mentor-requests.model').getEach('id');				
 				if (ids.length != 0) {

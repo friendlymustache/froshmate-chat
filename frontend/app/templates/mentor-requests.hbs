@@ -17,9 +17,10 @@
 				{{#each model as |mentor_request|}}
 				<div class="item">
 					{{#link-to 'mentor_requests.mentor_request' mentor_request class="ui header"}} 
-						{{mentor_request.target_college.college.name}} 
+						{{mentor_request.target_college.high_schooler.name}}
 					{{/link-to}}
-					Major: {{mentor_request.intended_major}} <br>				
+					# of Mentors: {{mentor_request.target_college.high_schooler.conversations.length}} <br>
+				    School: {{mentor_request.target_college.college.name}} <br>
 				</div>
 				{{/each}}
 				<div class="ui divider" style="margin-top: 0px"></div>
