@@ -27,7 +27,6 @@ class CollegeStudentsController < ApplicationController
     # Check that the provided FB user ID matches the
     # FB user id that corresponds to the access token
     if validate_token(access_token, fb_user_id)
-      puts "Validated!"
       email = college_student_params[:email].gsub(/,/, "")
       @user = CollegeStudent.find_by_fb_user_id(fb_user_id)
       # User with the provided email doesn't exist, so create

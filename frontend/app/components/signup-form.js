@@ -60,7 +60,8 @@ export default Ember.Component.extend({
 
   get_email : function() {
     var email = this.get('email');
-    if (this.get('collegestudent') && email !== undefined && email.length > 0) {
+    var width = Ember.$('body').width();
+    if (this.get('collegestudent') && width > 600 && email !== undefined && email.length > 0) {
       email += "@";
       email += this.get('college.email_suffix');      
     }

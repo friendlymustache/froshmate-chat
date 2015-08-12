@@ -27,8 +27,13 @@ class ApplicationController < ActionController::Base
 	  validate_token_url = "https://graph.facebook.com/debug_token?input_token=#{access_token}&access_token=#{app_access_token}"
 	  # puts validate_token_url
 	  auth_response = JSON.parse(RestClient.get(URI.encode(validate_token_url)))
+	  logger.info("Attempting to validate access token for user with Facebook ID #{fb_user_id}, authorization attempt: #{auth_response}")
 	  token_fb_id = auth_response['data']['user_id']
-	  return fb_user_id.to_s == token_fb_id.to_s
+
+	  result = fb_user_id.to_s == token_fb_id.to_s
+	  logger.info("Comparing params fb id: #{fb_user_id.to_s} to token-provided id: #{token_fb_id.to_s}, result: #{result}")
+	  return result	  
+
 	end
 
   

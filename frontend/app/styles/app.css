@@ -24,10 +24,24 @@ body {
 
 }
 
+.show-mobile : {
+	display: none;
+}
+
+
 @media (max-width: 600px) {
 	.hide-mobile {
 		display: none !important;
 	}	
+
+	.show-mobile {
+		display: auto !important;
+	}
+
+	#banner-logo {
+		width: 100px;
+	}
+
 }
 
 #one {

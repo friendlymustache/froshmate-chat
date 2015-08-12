@@ -8,6 +8,7 @@ class LoginController < ApplicationController
 		access_token = login_params[:access_token]
 	    # Check that the provided FB user ID matches the
 	    # FB user id that corresponds to the access token
+	    logger.info("Launching login attempt, trying to find user with Facebook ID #{fb_user_id}")
 	    if validate_token(access_token, fb_user_id)
 	      # Try to log the user in assuming they're a high schooler
 	      # and if that fails, try to log them in as a college student
@@ -22,6 +23,8 @@ class LoginController < ApplicationController
 
 		      return render json: json_user
 		  end
+		else
+			logger.info("Login failed for user with Facebook ID #{fb_user_id}")
 		end
 		render json: 'Bad credentials', status: 401
 	end

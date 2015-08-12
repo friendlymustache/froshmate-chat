@@ -3,7 +3,7 @@ class MentorRequestsController < ApplicationController
 
 	def index		
       if validate_admin
-      	render json: MentorRequest.all.order(:priority)
+      	render json: MentorRequest.all
       else
       	render json: 'Bad credentials', status: 401
       end

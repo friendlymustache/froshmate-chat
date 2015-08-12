@@ -31,15 +31,14 @@
         {{/if}}
 
         <div class="field {{if invalid_email 'error'}}">
-
-        <div class="ui right labeled input">
-          {{input class="ui input" type="text" value=email placeholder="Email"}}
-          {{#if show_email_suffix}}
-          <div class="ui label">
-            @{{college.email_suffix}}
+          <div class="ui right labeled input">
+            {{input class="ui input" type="text" value=email placeholder="Email"}}
+            {{#if show_email_suffix}}
+            <div class="ui label hide-mobile">
+              @{{college.email_suffix}}
+            </div>
+            {{/if}}          
           </div>
-          {{/if}}          
-        </div>
 
         </div>
 
@@ -49,6 +48,13 @@
         </div>
 
     </form>
+
+    <!--
+    <div class="ui center aligned basic segment"> 
+      P.S. Something wrong with the site? We'd love to hear from you: <br>
+      <a href="mailto: froshmate@gmail.com"> Contact Us </a>
+    </div>
+    -->
 
   </div>
 </div>

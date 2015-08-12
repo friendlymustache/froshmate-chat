@@ -1,7 +1,7 @@
 <div class = "ui borderless menu">
 	<div class="ui item">
       {{#link-to 'index'}}
-        <img class="ui small image" src="assets/images/logo.png">
+        <img class="ui small image" id="banner-logo" src="assets/images/logo.png">
       {{/link-to}}
      </div>
 	{{#if session.isAuthenticated}}
@@ -11,7 +11,7 @@
 	{{/if}}
 
 	<div class="ui borderless right menu" style="min-width: 30%; border: 0px; box-shadow: none;">
-		<div class="ui secondary {{if session.secure.admin 'four' 'three'}} three item borderless menu">
+		<div class="ui secondary borderless menu">
 			{{#if session.secure.admin}}
 				<div class="ui item">
 					{{#link-to 'mentor_requests' class="ui fade blue basic button"}} Admin {{/link-to}}
@@ -19,7 +19,7 @@
 			{{/if}}
 
 			<div class="ui item">
-				{{#link-to 'faq'  class="ui fade blue basic button"}} FAQ {{/link-to}}
+				{{#link-to 'faq'  class="ui fade blue basic button hide-mobile"}} FAQ {{/link-to}}
 			</div>
 			{{#if session.isAuthenticated}}
 				<div class="ui item">
@@ -27,7 +27,7 @@
 				</div>
 			{{else}}
 				<div class="ui item">
-					{{#link-to 'signup' class="ui fade blue basic button"}} Signup {{/link-to}}
+					{{#link-to 'signup' class="ui fade blue basic button hide-mobile"}} Signup {{/link-to}}
 				</div>
 			{{/if}}
 			<div class="ui item">
@@ -62,6 +62,10 @@
         <div class="item">
         	<a href="mailto: froshmate@gmail.com" class="item"> Contact Us </a>
         </div>
+
+		<div class="ui item">
+			{{#link-to 'faq' class="item"}} FAQ {{/link-to}}
+		</div>        
       </div>
     </div>
   </div>

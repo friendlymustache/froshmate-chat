@@ -9,12 +9,15 @@ export default Ember.Controller.extend({
 
 	college_students_items : function() {
 		var promise = this.get('college_students').then(function(college_students) {
+				var result = []
 				college_students.forEach(function(student) {
+					var obj = new Ember.Object();
 					var name = student.get('name');
 					name += ", major: " + student.get('major');
-					student.set('name', name);
+					obj.set('name', name);
+					result.push(obj);
 				});
-				return college_students;
+				return result;
 			}.bind(this));
 		return DS.PromiseArray.create({promise: promise});
 	}.property('college_students'),

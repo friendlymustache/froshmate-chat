@@ -25,7 +25,6 @@ class MessagesController < ApplicationController
 
 				recipient_auth_token = recipient.auth_token
     			$redis.publish "rt-change/#{recipient_auth_token}", @message.to_json
-				puts "Creating message with params: #{message_params}"    			
 			end
 			render json: @message
 		end
