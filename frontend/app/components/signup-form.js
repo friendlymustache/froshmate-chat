@@ -263,7 +263,6 @@ export default Ember.Component.extend({
   getUserAttributes: function(accessToken) {
     var token = accessToken;
     return this.getAccountAttributes().then(function(accountAttributes) {
-      debugger;
       accountAttributes['fb_user_id'] = accountAttributes['id'];
       delete accountAttributes['id'];
       accountAttributes['access_token'] = token;
