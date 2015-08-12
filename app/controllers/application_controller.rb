@@ -25,8 +25,10 @@ class ApplicationController < ActionController::Base
 	  # Verify the access token
 	  # See https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/v2.4#checktoken
 	  validate_token_url = "https://graph.facebook.com/debug_token?input_token=#{access_token}&access_token=#{app_access_token}"
+	  puts validate_token_url
 	  auth_response = JSON.parse(RestClient.get(URI.encode(validate_token_url)))
 	  token_fb_id = auth_response['data']['user_id']
+	  puts "Comparing #{fb_user_id.to_s} to #{token_fb_id.to_s}"
 	  return fb_user_id.to_s == token_fb_id.to_s
 	end
 
