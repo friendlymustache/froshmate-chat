@@ -1,22 +1,24 @@
-<div class="ui relaxed list" id="messages-grid" style="height: 60vh; padding: 10px; margin-bottom: 0px; overflow-y:scroll">
-	{{#if no_messages }}
-	<div class="ui center aligned message"> Send a message! </div>
-	{{else}}
-		{{#each model.messages as |msg|}}
-			{{#message-bubble message=msg}}{{/message-bubble}}
-		{{/each}}
-	{{/if}}
-</div>
+<div class="ui basic {{if loading 'loading'}} segment">
+	<div class="ui relaxed list" id="messages-grid" style="height: 60vh; padding: 10px; margin-bottom: 0px; overflow-y:scroll">
+		{{#if no_messages }}
+		<div class="ui center aligned message"> Send a message! </div>
+		{{else}}
+			{{#each model.messages as |msg|}}
+				{{#message-bubble message=msg}}{{/message-bubble}}
+			{{/each}}
+		{{/if}}
+	</div>
 
-<div class="ui grid" style="height: 10vh; margin: 0px;">
-	<div class="row" style="height: 100%; padding: 0px">
-		<div class="sixteen wide column" style="padding: 0px; height: 100%">
-				<div class="ui form"  style="height: 100%">
-					<div class="ui left icon input" style="height: 100%">
-						{{input enter="send_message" class="ui input full-height" value=message_text placeholder="Write a message..."}}
-						<i class="blue mail icon"/>						
+	<div class="ui grid" style="height: 10vh; margin: 0px;">
+		<div class="row" style="height: 100%; padding: 0px">
+			<div class="sixteen wide column" style="padding: 0px; height: 100%">
+					<div class="ui form"  style="height: 100%">
+						<div class="ui left icon input" style="height: 100%">
+							{{input enter="send_message" class="ui input full-height" value=message_text placeholder="Write a message..."}}
+							<i class="blue mail icon"/>						
+						</div>
 					</div>
-				</div>
+			</div>
 		</div>
 	</div>
 </div>

@@ -9,10 +9,12 @@ export default Ember.Controller.extend({
 		var websocket = this.get('socket').connect();
 		var auth_token = this.get('session.secure.auth_token');
 
+		this.set('loading', true);
 		websocket.on('connect', function(/* event */) {
+			this.set('loading', false);
 			console.log('Socket connected');
 			websocket.emit('auth_token', auth_token);
-		}, this);
+		}.bind(this), this);
 
 		var self = this;
 
@@ -66,9 +68,12 @@ export default Ember.Controller.extend({
 			});		
 
 			message.save().then(function(result) {
-				result.unloadRecord();								
+				var record_exists = this.store.peekRecord('message', result.get('id'));
+				if (record_exists != null) {
+					result.unloadRecord();
+				}		
 				self.force_recompute_of_properties();
-			});
+			}.bind(this));
 
 			this.set('message_text', "");
 
