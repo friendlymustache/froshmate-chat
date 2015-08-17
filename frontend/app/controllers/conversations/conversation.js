@@ -13,13 +13,13 @@ export default Ember.Controller.extend({
 		this.set('loading', true);
 		websocket.on('connect', function(/* event */) {
 			this.set('loading', false);
-			console.log('Socket connected');
+			// console.log('Socket connected');
 			websocket.emit('auth_token', auth_token);
 		}.bind(this), this);
 
 		// Name of event that signifies receiving a message
 		var received_message = 'rt-change/' + auth_token;
-		console.log("Listening for " + received_message);		
+		// console.log("Listening for " + received_message);		
 		websocket.on(received_message, function(message) {
 			var msg = this.store.normalize('message', JSON.parse(message));
 			var message_obj = this.store.push(msg);	
@@ -42,7 +42,7 @@ export default Ember.Controller.extend({
 		}.bind(this));
 
 		websocket.on('disconnect', function(event) {
-			console.log('On close event has been called: ' + event);
+			// console.log('On close event has been called: ' + event);
 		}, this);
 	},
 	other_user : function() {
@@ -95,25 +95,25 @@ export default Ember.Controller.extend({
 
 				promise.then(function(conversation) {
 					page = conversation.get('page');
-					console.log("Page id:", page.get('id'));
+					// console.log("Page id:", page.get('id'));
 					// Create a new message under the current last-page
 					var message = this.store.createRecord('message', {'page' : page, 'text' : text,
 					 'sender_id' : sender_id, 'recipient_id' : recipient_id,
 					  sent_by_high_schooler : this.get('session.secure.isHighSchooler')});
 
 					// Add the message to the list of recently-created messages
-					this.get('new_messages').pushObject(message);		
+					this.get('new_messages').pushObject(message);
+					// Scroll to the bottom of the existing messages
+					Ember.run.scheduleOnce('afterRender', this, function() {
+							Ember.$("#messages-grid").scrollTop(Ember.$('#messages-grid').prop("scrollHeight"));
+					});									
 
 					// Currently only forces the "no messages" property to recompute
 					this.force_recompute_of_properties();
 					this.set('message_text', "");		
 
 					message.save().then(function(/* result */) {								
-						// Scroll to the bottom of the existing messages
-						Ember.run.scheduleOnce('afterRender', this, function() {
-								Ember.$("#messages-grid").scrollTop(Ember.$('#messages-grid').prop("scrollHeight"));
-						});		
-
+						Ember.$("#messages-grid").scrollTop(Ember.$('#messages-grid').prop("scrollHeight"));
 					}.bind(this));
 
 
