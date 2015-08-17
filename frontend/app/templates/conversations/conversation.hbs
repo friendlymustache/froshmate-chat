@@ -3,13 +3,19 @@
 		{{#if no_messages }}
 		<div class="ui center aligned message"> Send a message! </div>
 		{{else}}
-			{{#each model.messages as |msg|}}
+			{{infinity-loader infinityModel=messages scrollable="#messages-grid"}}				
+			<!-- <div style="height: 65vh;  width: 55vw"> </div> -->
+			{{#each messages as |msg|}}
 				{{#message-bubble message=msg}}{{/message-bubble}}
+			{{/each}}
+
+			{{#each new_messages as |msg|}}
+				{{#message-bubble message=msg}}{{/message-bubble}}			
 			{{/each}}
 		{{/if}}
 	</div>
 
-	<div class="ui grid" style="height: 10vh; margin: 0px;">
+	<div class="ui grid" style="height: 50px; margin: 0px;">
 		<div class="row" style="height: 100%; padding: 0px">
 			<div class="sixteen wide column" style="padding: 0px; height: 100%">
 					<div class="ui form"  style="height: 100%">

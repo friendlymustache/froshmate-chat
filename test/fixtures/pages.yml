@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  prev_page_id: 1
+  conversation_id: 1
+
+two:
+  prev_page_id: 1
+  conversation_id: 1

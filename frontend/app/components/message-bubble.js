@@ -9,6 +9,12 @@ export default Ember.Component.extend({
 		return this.get('session.secure.isHighSchooler') === this.get('message.sent_by_high_schooler');
 	}.property('message.sent_by_high_schooler'),
 
+	unsaved : function() {
+		// return this.get('message.isNew');
+		return false;
+	}.property('message.isNew'),
+
+
 
 	actions : {
 		toggle_date : function() {

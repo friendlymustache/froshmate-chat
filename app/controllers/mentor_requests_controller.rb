@@ -20,7 +20,12 @@ class MentorRequestsController < ApplicationController
 			high_schooler = target_college.high_schooler
 			college_student = CollegeStudent.find(mentor_request_params[:college_student_id])
 			# Create a new conversation under the target_college edge
-			conversation = target_college.conversations.create(high_schooler_id: high_schooler.id, college_student_id: college_student.id)				
+			page = Page.create!
+			conversation = target_college.conversations.create(high_schooler_id: high_schooler.id,
+				college_student_id: college_student.id, page_id: page.id)		
+			page.conversation = conversation
+			page.save
+
        		CollegeStudentMailer.new_match(request, conversation).deliver_later
        		HighSchoolerMailer.new_match(conversation).deliver_later
 			render json: request.destroy

@@ -173,7 +173,7 @@ export default Ember.Component.extend({
     );
   },
 
-  onSignupFailure : function(reason) {
+  onSignupFailure : function(/* reason */) {
     this.set('issigningup', false);
     alert("It looks like you already have an account! Try logging in above");
   },

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150811205844) do
+ActiveRecord::Schema.define(version: 20150814010907) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,8 @@ ActiveRecord::Schema.define(version: 20150811205844) do
     t.integer  "high_schooler_id"
     t.integer  "college_student_id"
     t.integer  "target_college_id"
+    t.integer  "page_id",                           null: false
+    t.integer  "num_pages",          default: 1
   end
 
   create_table "high_school", force: :cascade do |t|
@@ -78,6 +80,14 @@ ActiveRecord::Schema.define(version: 20150811205844) do
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
     t.boolean  "sent_by_high_schooler"
+    t.integer  "page_id",               null: false
+  end
+
+  create_table "pages", force: :cascade do |t|
+    t.integer  "page_id"
+    t.integer  "conversation_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   create_table "profiles", force: :cascade do |t|

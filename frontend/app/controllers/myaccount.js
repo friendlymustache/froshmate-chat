@@ -16,14 +16,14 @@ export default Ember.Controller.extend({
 
    colleges_with_conversations : function() {
     return this.get('model.target_colleges').filter(function(tc) {
-      return tc.get('conversations').length != 0;
-    })
+      return tc.get('conversations').length !== 0;
+    });
   }.property('model', 'model.target_colleges'),
 
    colleges_with_mentor_requests : function() {
     return this.get('model.target_colleges').filter(function(tc) {
-      return tc.get('mentor_requests').length != 0;
-    })
+      return tc.get('mentor_requests').length !== 0;
+    });
   }.property('model', 'model.target_colleges'),  
 
   isEmailValid : function(email) {
@@ -55,7 +55,7 @@ export default Ember.Controller.extend({
 
     requestNewMentor : function() {
       var college = this.get('college'); 
-      var curr_user = this.store.find('high-schooler', this.get('session.secure.id')).then(function(user) {
+      this.store.find('high-schooler', this.get('session.secure.id')).then(function(user) {
         if (college) {        
             // Create a mentor request for the college embedded in a "new" target
             // college

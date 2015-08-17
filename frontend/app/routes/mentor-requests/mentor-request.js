@@ -12,7 +12,7 @@ export default Ember.Route.extend({
 		var college_id = model.get('target_college.college.id');
 		var existing_students = model.get('target_college.conversations').getEach('college_student.id');
 		var filterer = function(student) {
-			var result = student.get('college.id') == college_id && existing_students.indexOf(student.get('id')) == -1;
+			var result = (student.get('college.id') === college_id && existing_students.indexOf(student.get('id') === -1));
 			return result;
 		};
 

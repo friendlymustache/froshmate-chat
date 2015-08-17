@@ -1,5 +1,6 @@
 class Message < ActiveRecord::Base
-	belongs_to :conversation
+	belongs_to :page	
+
 	def self.find_by_token(auth_token, id)
 		user = (CollegeStudent.find_by_auth_token(auth_token) || HighSchooler.find_by_auth_token(auth_token))
 		# Verifies that user exists

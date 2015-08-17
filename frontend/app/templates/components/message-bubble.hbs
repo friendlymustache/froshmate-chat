@@ -7,7 +7,7 @@
 {{/if}}
 
 <div class="{{if sent_by_curr_user 'right' 'left'}} floated content" {{action "toggle_date"}} style="max-width: 20vw">
-	<a class="ui large {{if sent_by_curr_user 'blue'}} label" style="white-space: normal">{{message.text}}</a>
+	<a class="ui large {{if sent_by_curr_user 'blue'}}  {{if unsaved 'disabled'}} label" style="white-space: normal">{{message.text}}</a>
 </div>
 
 

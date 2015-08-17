@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   resources :messages
   resources :target_colleges
   resources :mentor_requests
+  resources :pages
 
   get 'login' => 'login#index'
   get 'colleges_for_user' => 'colleges#for_user'

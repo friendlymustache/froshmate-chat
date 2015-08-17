@@ -8,13 +8,19 @@
 var app = require('express')()
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var redis = require('redis').createClient();
+var redis_lib = require('redis');
 
 io.on('connection', function(socket) {
-    console.log("Server connected!");
+	// Create a new client for each connection so that we don't
+	// send a message to everybody
+	var redis = redis_lib.createClient();
+    // When an auth token is received from the ember app,
+    // subscribe to messages sent to the user with the
+    // provided auth token
     socket.on('auth_token', function(token) {
-        console.log("Auth token received!");
-        redis.subscribe('rt-change/' + token);
+    	var event_name = 'rt-change/' + token; 
+        console.log("Auth token received! Subscribing to " + event_name);
+        redis.subscribe(event_name);
         redis.on('message', function(channel, message) {
             socket.emit('rt-change/' + token, message);
         });

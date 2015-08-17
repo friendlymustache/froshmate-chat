@@ -1,5 +1,15 @@
 class MessagesController < ApplicationController
 	skip_before_filter :verify_authenticity_token
+
+	def index
+		authenticate_or_request_with_http_token do |token, options|
+			page_id = params[:page]
+			page = Page.find(page_id)
+			total_pages = page.conversation.num_pages
+			render json: Page.messages_with_token(page_id, token).order(:created_at), each_serializer: MessageSerializer, meta: {total_pages: total_pages}
+		end
+	end
+
 	def show
 		message_id = params[:id]
 		authenticate_or_request_with_http_token do |token, options|
@@ -24,6 +34,7 @@ class MessagesController < ApplicationController
 				end
 
 				recipient_auth_token = recipient.auth_token
+				puts "Publishing to rt-change/#{recipient_auth_token}"
     			$redis.publish "rt-change/#{recipient_auth_token}", @message.to_json
 			end
 			render json: @message
@@ -32,7 +43,7 @@ class MessagesController < ApplicationController
 
 private
 	def message_params
-		params.require(:message).permit(:sender_id, :recipient_id, :text, :conversation_id, :sent_by_high_schooler)
+		params.require(:message).permit(:sender_id, :recipient_id, :text, :page_id, :sent_by_high_schooler)
 	end
 
 
