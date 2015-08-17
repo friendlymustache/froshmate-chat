@@ -7,6 +7,26 @@ export default Ember.Component.extend({
   college: undefined,
   email : "",
 
+  resize_toggle : false,
+
+  _resizeHandler : function() {
+    this.set('resize_toggle', !this.get('resize_toggle'));
+  },
+
+  resizeHandler : function() {
+      Ember.run.debounce(this, this.get('_resizeHandler'), 250);    
+  },
+
+
+  didInsertElement: function() {
+    $(window).bind('resize', this.get('resizeHandler').bind(this));
+    $(window).resize();
+  },
+
+  willDestroy: function() {
+    $(window).unbind('resize', this.get('resizeHandler'));
+  }, 
+
   something_selected: function() {
     return (this.get('highschooler') || this.get('collegestudent'));
   }.property('highschooler', 'collegestudent'),
@@ -18,6 +38,21 @@ export default Ember.Component.extend({
   dropdown_prompt : function() {
     return this.get('highschooler') ? "What's your dream college?" : "Select your college";
   }.property('highschooler'),
+
+  show_email : function() {
+      return this.get('highschooler') ||  this.get('college') !== undefined;
+  }.property("highschooler", "collegestudent", "college"),
+
+  email_placeholder : function() {
+    if (this.get('collegestudent')) {
+      var suffix = this.get('college.email_suffix');
+      if (Ember.$('body').width() < 600) {
+        return "Email " + "(@" + suffix + ")";
+      }
+    }
+    return "Email";
+
+  }.property('collegestudent', 'college', 'resize_toggle'),
 
   display_form : function() {
     // First string will be displayed until JQuery slide-down animation overwrites the
@@ -153,7 +188,13 @@ export default Ember.Component.extend({
 
   isEmailValid : function(email) {
     var regex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$";
-    return (email !== undefined && email.match(regex) != null);
+    var common_validation = (email !== undefined && email.match(regex) != null);
+    if (!this.get('collegestudent')) {
+      return common_validation;
+    }
+    var college_regex = new RegExp(this.get('college.email_suffix'));
+    return common_validation && email.match(college_regex);
+
   },
 
   onSignup : function(result) {    

@@ -9,7 +9,7 @@
 </div>
 
 <div class="column centered row">
-  <div class="five wide column">
+  <div class="five wide column" style="min-width: 230px">
     <form class="ui center aligned form" style={{display_form}}>
         {{#if email_taken}}
           <div class="ui big red header">
@@ -30,17 +30,18 @@
           </div>
         {{/if}}
 
+        {{#if show_email}}
         <div class="field {{if invalid_email 'error'}}">
           <div class="ui right labeled input">
-            {{input class="ui input" type="text" value=email placeholder="Email"}}
+            {{input class="ui input" type="text" value=email placeholder=email_placeholder}}
             {{#if show_email_suffix}}
             <div class="ui label hide-mobile">
               @{{college.email_suffix}}
             </div>
             {{/if}}          
           </div>
-
         </div>
+        {{/if}}
 
         <div id="cbutton" class="ui fluid facebook button {{if issigningup 'loading'}}" {{action 'signup'}}>
           <i class="facebook icon"></i>
