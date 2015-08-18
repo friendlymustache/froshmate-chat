@@ -31,7 +31,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, InfinityRoute, {
 			if (new_messages !== undefined) {
 				new_messages.clear();
 			}
-			console.log("Old id: ", old_id);
 			this.set('firstLoad', true);
 			messages = this.infinityModel('message', {perPage : config.messagesPerPage, startingPage : model.get('page'), 
 				modelPath: 'controller.messages'});
