@@ -24,21 +24,27 @@ export default Ember.Controller.extend({
 			var msg = this.store.normalize('message', JSON.parse(message));
 			var message_obj = this.store.push(msg);	
 			var page_id = message_obj.get('page.id');
-			// If our conversation partner created a new page, create a new
-			// local copy of that page to use for creating messages
-			// TODO consider concurrency issues due to latency in receiving messages from websocket
-			if (this.store.peekRecord('page', page_id) === null) {
-				var model = this.get('model');
-				message_obj.get('page').then(function(page) {
-					model.set('page', page);
-				}.bind(this));				
+
+			// Check that the message comes from the current conversation
+			console.log("Message comes from conversation ", message_obj.get('page.conversation.id'), "current id: ", this.get('model.id'));
+			if (message_obj.get('page.conversation.id') == this.get('model.id')) {
+				// If our conversation partner created a new page, create a new
+				// local copy of that page to use for creating messages
+				// TODO consider concurrency issues due to latency in receiving messages from websocket
+				if (this.store.peekRecord('page', page_id) === null) {
+					var model = this.get('model');
+					message_obj.get('page').then(function(page) {
+						model.set('page', page);
+					}.bind(this));				
+				}
+
+				this.get('new_messages').pushObject(message_obj);
+				this.force_recompute_of_properties();
+				Ember.run.scheduleOnce('afterRender', this, function() {
+						Ember.$("#messages-grid").scrollTop(Ember.$('#messages-grid').prop("scrollHeight"));
+				});							
 			}
 
-			this.get('new_messages').pushObject(message_obj);
-			this.force_recompute_of_properties();
-			Ember.run.scheduleOnce('afterRender', this, function() {
-					Ember.$("#messages-grid").scrollTop(Ember.$('#messages-grid').prop("scrollHeight"));
-			});			
 		}.bind(this));
 
 		websocket.on('disconnect', function(event) {
@@ -84,8 +90,9 @@ export default Ember.Controller.extend({
 
 				// Check that the conversation's last page doesn't have too many messages
 				if (page.get('messages.length') >= config.messagesPerPage) {
+					console.log("Page ", this.get('model.page.id'), " has", this.get('model.page.messages.length') ," many messages, creating a new one")
 					// Create a new page whose previous page was the last page
-					page = this.store.createRecord('page', {'conversation' : conversation, 'page' : page});
+					page = this.store.createRecord('page', {'conversation' : conversation, 'page_id' : page.get('id')});
 					conversation.set('num_pages', conversation.get('num_pages') + 1);
 					conversation.set('page', page);
 					// Update the conversation with its new last page
@@ -95,7 +102,7 @@ export default Ember.Controller.extend({
 
 				promise.then(function(conversation) {
 					page = conversation.get('page');
-					// console.log("Page id:", page.get('id'));
+					console.log("Creating message under page:", page.get('id'));
 					// Create a new message under the current last-page
 					var message = this.store.createRecord('message', {'page' : page, 'text' : text,
 					 'sender_id' : sender_id, 'recipient_id' : recipient_id,

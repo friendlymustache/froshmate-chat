@@ -10,7 +10,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 		this._super(controller, model);
 		var firstConversation = model.get('firstObject');
 		if (firstConversation) {
-			this.transitionTo('conversations.conversation', firstConversation);
+			// this.transitionTo('conversations.conversation', firstConversation);
 		}
 		else {
 			controller.set('noConversations', true);			

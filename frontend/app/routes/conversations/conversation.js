@@ -19,12 +19,20 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, InfinityRoute, {
 
 
 	setupController : function(controller, model) {
-	
+		
+		var old_id = controller.get('model.id');
+
 		this._super(controller, model);		
 		controller.set('lastPage', model.get('page'));
 
 		var messages = controller.get('messages');
-		if (messages === undefined) {
+		if (messages === undefined || old_id != model.get('id')) {
+			var new_messages = controller.get('new_messages');
+			if (new_messages !== undefined) {
+				new_messages.clear();
+			}
+			console.log("Old id: ", old_id);
+			this.set('firstLoad', true);
 			messages = this.infinityModel('message', {perPage : config.messagesPerPage, startingPage : model.get('page'), 
 				modelPath: 'controller.messages'});
 			controller.set('messages', messages);			

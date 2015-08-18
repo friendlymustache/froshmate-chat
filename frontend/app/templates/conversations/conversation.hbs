@@ -4,7 +4,6 @@
 		<div class="ui center aligned message"> Send a message! </div>
 		{{else}}
 			{{infinity-loader infinityModel=messages scrollable="#messages-grid"}}				
-			<!-- <div style="height: 65vh;  width: 55vw"> </div> -->
 			{{#each messages as |msg|}}
 				{{#message-bubble message=msg}}{{/message-bubble}}
 			{{/each}}
