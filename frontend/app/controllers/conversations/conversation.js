@@ -21,29 +21,39 @@ export default Ember.Controller.extend({
 		var received_message = 'rt-change/' + auth_token;
 		// console.log("Listening for " + received_message);		
 		websocket.on(received_message, function(message) {
-			var msg = this.store.normalize('message', JSON.parse(message));
-			var message_obj = this.store.push(msg);	
+			var json_msg = JSON.parse(message);
+			var message_obj = this.store.push(this.store.normalize('message', json_msg));	
+			console.log("Received message json: ", message);
 			var page_id = message_obj.get('page.id');
+			var conversation_id = json_msg.conversation_id;
 
-			// Check that the message comes from the current conversation
-			console.log("Message comes from conversation ", message_obj.get('page.conversation.id'), "current id: ", this.get('model.id'));
-			if (message_obj.get('page.conversation.id') == this.get('model.id')) {
-				// If our conversation partner created a new page, create a new
-				// local copy of that page to use for creating messages
-				// TODO consider concurrency issues due to latency in receiving messages from websocket
-				if (this.store.peekRecord('page', page_id) === null) {
-					var model = this.get('model');
-					message_obj.get('page').then(function(page) {
-						model.set('page', page);
-					}.bind(this));				
-				}
+			// If our conversation partner created a new page, create a new
+			// local copy of that page to use for creating messages
+			// TODO consider concurrency issues due to latency in receiving messages from websocket
+			if (this.store.peekRecord('page', page_id) === null) {
+				message_obj.get('page').then(function(page) {
+					console.log("Getting page ", page.get('id'), "setting page of convo", conversation_id, "to this page");
+					var promise = this.store.find('conversation', conversation_id);
+					promise.then(function(convo) {
+						debugger;
+						convo.set('page', page);
+					})
+				}.bind(this));				
+			}
 
+
+
+			// Check that the message comes from the current conversation, if so push it to our
+			// current list of messages			
+			console.log("Message comes from conversation ", conversation_id, "current id: ", this.get('model.id'));
+			if (conversation_id == this.get('model.id')) {
 				this.get('new_messages').pushObject(message_obj);
 				this.force_recompute_of_properties();
 				Ember.run.scheduleOnce('afterRender', this, function() {
 						Ember.$("#messages-grid").scrollTop(Ember.$('#messages-grid').prop("scrollHeight"));
 				});							
 			}
+
 
 		}.bind(this));
 
@@ -79,6 +89,7 @@ export default Ember.Controller.extend({
 				var recipient_id = parseInt(this.get('model.high_schooler.id')) + parseInt(this.get('model.college_student.id')) - sender_id;
 				var conversation = this.get('model');
 				var page = conversation.get('page');
+				console.log("Page for current conversation: ", page.get('id'));
 				var promise = new Ember.RSVP.Promise(function(resolve, reject) {
 					if (conversation !== undefined) {
 						resolve(conversation);					

@@ -35,6 +35,7 @@ class MessagesController < ApplicationController
 
 				recipient_auth_token = recipient.auth_token
 				puts "Publishing to rt-change/#{recipient_auth_token}"
+				@message.conversation_id = Page.find(message_params[:page_id]).conversation_id
     			$redis.publish "rt-change/#{recipient_auth_token}", @message.to_json
 			end
 			render json: @message
