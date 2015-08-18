@@ -9,11 +9,16 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 	setupController : function(controller, model) {
 		this._super(controller, model);
 		var firstConversation = model.get('firstObject');
-		if (firstConversation) {
-			// this.transitionTo('conversations.conversation', firstConversation);
-		}
-		else {
-			controller.set('noConversations', true);			
+		controller.set('noConversations', !firstConversation);			
+	},
+
+	afterModel : function(model, transition) {
+		var routeName = Ember.get(transition, 'targetName');
+		var firstConversation = model.get('firstObject');
+		if (routeName == "conversations.index" && firstConversation !== undefined) {
+			this.transitionTo('conversations.conversation', firstConversation);
 		}
 	}
+
+
 });

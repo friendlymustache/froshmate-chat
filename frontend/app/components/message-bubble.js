@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-	classNames : ['item'],
+	classNames : ['item', 'message-bubble'],
 	show_date : false,
 	dateOutputFormat : 'MMMM Do YYYY, h:mm:ss a',
 	dateInputFormat : '',
