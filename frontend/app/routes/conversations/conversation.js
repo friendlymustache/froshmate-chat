@@ -32,6 +32,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, InfinityRoute, {
 				new_messages.clear();
 			}
 			this.set('firstLoad', true);
+			this.set('currentPage', undefined);
 			messages = this.infinityModel('message', {perPage : config.messagesPerPage, startingPage : model.get('page'), 
 				modelPath: 'controller.messages'});
 			controller.set('messages', messages);			
